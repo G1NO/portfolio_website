@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Storyboard — Using AI Assistants at Work | Gino DeFalco</title>
+<meta name="description" content="Screen-by-screen storyboard for an e-learning module on using AI assistants at work.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f0d0b;--card:#1d1914;--card2:#231e18;--ink:#f2ece2;--muted:#a89e8f;--line:#2e281f;--amber:#e3913f;--green:#7fbf8a;--red:#e07a6a}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:15.5px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:var(--amber)}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 28px}
+  nav{border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center;height:60px;font-size:14.5px}
+  nav a{color:var(--muted);text-decoration:none}
+  nav a:hover{color:var(--amber)}
+  nav .name{font-family:Fraunces,serif;font-weight:700;font-size:18px;color:var(--ink)}
+  header{padding:60px 0 30px}
+  .kicker{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);font-weight:600;margin-bottom:12px}
+  h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.2;margin:0}
+  h1{font-size:clamp(30px,4.5vw,42px)}
+  header p{color:var(--muted);font-size:17px;margin:14px 0 0;max-width:68ch}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;margin-top:22px;font-size:13.5px;color:var(--muted)}
+  .legend b{color:var(--ink)}
+  .section-label{margin:46px 0 14px;font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:var(--amber);font-weight:600;border-bottom:1px solid var(--line);padding-bottom:8px}
+  .screen{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:0 0 18px;overflow:hidden}
+  .screen-head{display:flex;align-items:center;gap:14px;padding:14px 20px;background:var(--card2);border-bottom:1px solid var(--line)}
+  .screen-head .id{font-family:Fraunces,serif;font-weight:700;color:var(--amber);font-size:18px;min-width:52px}
+  .screen-head h3{font-size:18px}
+  .screen-head .type{margin-left:auto;font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:var(--muted);border:1px solid var(--line);border-radius:999px;padding:3px 10px;white-space:nowrap}
+  .grid{display:grid;grid-template-columns:1fr 1fr}
+  .cell{padding:16px 20px;border-right:1px solid var(--line)}
+  .cell:last-child{border-right:0}
+  .cell h4{margin:0 0 6px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .cell p{margin:0 0 8px}
+  .cell ul{margin:0 0 8px;padding-left:18px}
+  .cell li{margin-bottom:4px}
+  .full{border-top:1px solid var(--line);padding:14px 20px}
+  .full h4{margin:0 0 6px;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:600}
+  .ok{color:var(--green);font-weight:600}
+  .no{color:var(--red);font-weight:600}
+  .note{color:var(--muted);font-size:14px}
+  footer{padding:40px 0 60px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  @media (max-width:720px){.grid{grid-template-columns:1fr}.cell{border-right:0;border-bottom:1px solid var(--line)}}
+  @media print{body{background:#fff;color:#111}.screen,.screen-head{background:#fff;border-color:#ccc}.cell,.full{border-color:#ddd}nav,footer{display:none}.screen{break-inside:avoid}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a class="name" href="index.html">Gino DeFalco</a><a href="work-ai-at-work.html">← Back to project</a></div></nav>
+
+<div class="wrap">
+<header>
+  <div class="kicker">Storyboard · Concept project</div>
+  <h1>Using AI Assistants at Work</h1>
+  <p>Screen-by-screen plan for the module: what learners see, what the narration says, how each interaction works, and the feedback they get. Built from the <a href="ai-design-doc.html">design document</a>, and used to develop the <a href="ai-module.html">finished module</a>.</p>
+  <div class="legend"><span><b>12 screens</b></span><span><b>~15 min</b> seat time</span><span><b>6</b> interactions</span><span>Narration is optional audio; all of it also appears as on-screen text.</span></div>
+</header>
+
+<div class="section-label">Introduction</div>
+
+<div class="screen">
+  <div class="screen-head"><span class="id">1.0</span><h3>Title screen</h3><span class="type">Static</span></div>
+  <div class="grid">
+    <div class="cell"><h4>On-screen text</h4><p><b>Using AI Assistants at Work</b><br>A practical 15-minute starter course.</p><p>Button: <b>Start</b></p></div>
+    <div class="cell"><h4>Narration</h4><p>"AI assistants can save you real time at work, if you know how to use them. In the next fifteen minutes, you'll learn four habits that make the difference."</p></div>
+  </div>
+  <div class="full"><h4>Notes</h4><p class="note">Progress bar appears from the next screen on. Learners can leave and come back, and the module remembers where they were.</p></div>
+</div>
+
+<div class="screen">
+  <div class="screen-head"><span class="id">1.1</span><h3>Meet Maya</h3><span class="type">Poll</span></div>
+  <div class="grid">
+    <div class="cell"><h4>On-screen text</h4><p>Meet <b>Maya</b>, an operations coordinator. It's 9:00 a.m. and she already has 40 unread emails, meeting notes to summarize, a customer letter to write and a report due at noon.</p><p>Her company just rolled out an AI assistant. Let's follow her morning.</p><p><b>Quick poll:</b> How do you use AI at work today?</p><ul><li>I haven't tried it yet</li><li>A few times</li><li>Every week</li><li>Every day</li></ul></div>
+    <div class="cell"><h4>Narration</h4><p>"This is Maya. Like a lot of us, she has more work than hours. Her company just gave everyone an AI assistant, and she's not sure where to start. First, where are you starting?"</p><h4>Feedback (any choice)</h4><p>"Wherever you're starting, this course meets you there. Let's see how Maya gets through her morning."</p></div>
+  </div>
+  <div class="full"><h4>Notes</h4><p class="note">No right answer. The poll gets the learner clicking right away and doubles as Level 1 baseline data.</p></div>
+</div>
+
+<div class="section-label">Section 1 · Good fit or not</div>
+
+<div class="screen">
+  <div class="screen-head"><span class="id">2.0</span><h3>What AI is good at, and what it's not</h3><span class="type">Content</span></div>
+  <div class="grid">
+    <div class="cell"><h4>On-screen text</h4><p><span class="ok">Good fit:</span> drafting emails and documents, summarizing long text, changing tone, brainstorming ideas, explaining something in simpler words.</p><p><span class="no">Be careful:</span> exact facts and figures, math, recent events and prices, decisions about people, and anything that depends on company info you haven't given it.</p></div>
+    <div class="cell"><h4>Narration</h4><p>"AI assistants are great with words: drafting, summarizing, rewording, brainstorming. They're much weaker with facts, numbers and judgment calls. They can sound sure of themselves and still be wrong."</p></div>
+  </div>
+</div>
+
+<div class="screen">
+  <div class="screen-head"><span class="id">2.1</span><h3>Sort Maya's tasks</h3><span class="type">Sorting activity</span></div>
+  <div class="grid">
+    <div class="cell"><h4>On-screen text</h4><p>Maya has six tasks. For each one, choose <b>Good fit</b> or <b>Be careful</b>.</p><ul><li>Draft a friendly reminder email about a deadline <span class="ok">Good fit</span></li><li>Turn her own meeting notes into 5 bullet points <span class="ok">Good fit</span></li><li>Brainstorm names for a team event <span class="ok">Good fit</span></li><li>Look up a vendor's current price <span class="no">Be careful</span></li><li>Add up quarterly budget totals for a report <span class="no">Be careful</span></li><li>Decide which employee should get a promotion <span class="no">Be careful</span></li></ul></div>
+    <div class="cell"><h4>Feedback (per item, after each choice)</h4><ul><li><b>Reminder email:</b> drafting is a sweet spot. Maya just reviews the tone.</li><li><b>Meeting notes:</b> summarizing her own notes works well, since AI is working from real info she provided.</li><li><b>Event names:</b> brainstorming is low-risk and fast.</li><li><b>Vendor price:</b> AI may give an outdated or made-up number. Check the vendor's site.</li><li><b>Budget totals:</b> AI can make math mistakes. Use a spreadsheet.</li><li><b>Promotion:</b> decisions about people need human judgment and context AI doesn't have.</li></ul></div>
+  </div>
+  <div class="full"><h4>Notes</h4><p class="note">Two big buttons per task (no drag and drop), so it works with keyboard, touch and screen readers. Shows the score at the end, e.g. "You got 5 of 6."</p></div>
+</div>
+
+<div class="section-label">Section 2 · Better prompts</div>
+
+<div class="screen">
+  <div class="screen-head"><span class="id">3.0</span><h3>Why vague prompts get vague answers</h3><span class="type">Content</span></div>
+  <div class="grid">
+    <div class="cell"><h4>On-screen text</h4><p><b>Weak prompt:</b> "Write an email about the order."</p><p>Result: a generic email that doesn't say what's happening, who it's for or what to do next.</p><p>A strong prompt has three parts:</p><ul><li><b>Goal:</b> what do you want?</li><li><b>Context:</b> what does the AI need to know?</li><li><b>Format:</b> what should the answer look like?</li></ul><p>The fourth part, <b>Check</b>, comes after the AI answers. More on that in Section 4.</p></div>
+    <div class="cell"><h4>Narration</h4><p>"The AI only knows what you tell it. A one-line prompt gets a one-size-fits-all answer. Give it a clear goal, the context it needs, and the format you want, and the first draft gets a lot closer."</p></div>
+  </div>
+</div>
+
+<div class="screen">
+  <div class="screen-head"><span class="id">3.1</span><h3>Prompt makeover</h3><span class="type">Build activity</span></div>
+  <div class="grid">
+    <div class="cell"><h4>On-screen text</h4><p>A customer's order is delayed and Maya needs to email them. Build her prompt by picking the best option for each part.</p><p><b>Goal</b></p><ul><li>Write something about the order</li><li><span class="ok">✓</span> Write a short apology email telling a customer their order is delayed by one week</li><li>Help me with customers</li></ul><p><b>Context</b></p><ul><li>Customers are important to us</li><li><span class="ok">✓</span> The customer is a long-time client, the delay is on our supplier's end, and we're offering free shipping on their next order</li><li>No context needed, the AI knows our business</li></ul><p><b>Format</b></p><ul><li>Make it good</li><li><span class="ok">✓</span> Under 120 words, warm but professional, end with [My name] and [Phone]</li><li>As long as possible</li></ul></div>
+    <div class="cell"><h4>Feedback</h4><p>Per wrong pick, e.g.: "Too vague. The AI won't know it's a delay or that it's an apology."</p><p>When all three are right, show the assembled prompt and a sample AI response: a short, warm apology email that explains the one-week delay, offers free shipping and ends with the placeholders.</p><p>"See the difference? Same tool, much better first draft."</p></div>
+  </div>
+  <div class="full"><h4>Notes</h4><p class="note">Learners can retry each part until it's right. The assembled prompt builds up live as they choose.</p></div>
+</div>
+
+<div class="section-label">Section 3 · Protect data</div>
+
+<div class="screen">
+  <div class="screen-head"><span class="id">4.0</span><h3>What never goes into an AI tool</h3><span class="type">Content</span></div>
+  <div class="grid">
+    <div class="cell"><h4>On-screen text</h4><p><b>Keep out:</b></p><ul><li>Customer personal info (names with account numbers, addresses, ID numbers)</li><li>Passwords and login details</li><li>Confidential financials and unreleased plans</li><li>HR or medical info about coworkers</li></ul><p><b>Quick test:</b> Would you be OK if this showed up outside the company?</p><p><b>Better habit:</b> swap real details for placeholders like [Customer] or [Account #].</p><p>Always follow your company's AI policy. Approved internal tools may have different rules.</p></div>
+    <div class="cell"><h4>Narration</h4><p>"Whatever you paste into an AI tool may be stored, and depending on the tool, it may be used for training. So before you paste, ask yourself one question: would I be OK if this showed up outside the company? If not, take the sensitive details out, or don't paste it."</p></div>
+  </div>
+</div>
+
+<div class="screen">
+  <div class="screen-head"><span class="id">4.1</span><h3>Share or don't share</h3><span class="type">Decision activity</span></div>
+  <div class="grid">
+    <div class="cell"><h4>On-screen text</h4><p>Maya wants to paste each of these into a public AI tool. Is it OK?</p><ul><li>A press release that's already public, to shorten it <span class="ok">OK to share</span></li><li>A customer's name, address and account number, to write them a letter <span class="no">Don't share</span></li><li>Her login password, to get help with an error <span class="no">Don't share</span></li><li>A general question: how to write a polite follow-up email <span class="ok">OK to share</span></li><li>Draft quarterly results before they're announced <span class="no">Don't share</span></li></ul></div>
+    <div class="cell"><h4>Feedback</h4><ul><li><b>Press release:</b> already public, so there's no risk.</li><li><b>Customer details:</b> use placeholders instead, and fill in the real details yourself afterward.</li><li><b>Password:</b> never share it with any tool or person. Describe the error message instead.</li><li><b>General question:</b> no company info involved.</li><li><b>Unreleased results:</b> confidential until announced. Only use tools your company has approved for this.</li></ul></div>
+  </div>
+</div>
+
+<div class="section-label">Section 4 · Check the output</div>
+
+<div class="screen">
+  <div class="screen-head"><span class="id">5.0</span><h3>AI can be confidently wrong</h3><span class="type">Content</span></div>
+  <div class="grid">
+    <div class="cell"><h4>On-screen text</h4><p>AI sometimes <b>makes things up</b>: names, numbers, dates, policies, even links. It sounds right, which makes it easy to miss. This is called a "hallucination."</p><p><b>The 3-step check:</b></p><ul><li><b>Facts:</b> verify names, numbers, dates and policies against a real source.</li><li><b>Fit:</b> does it say what you mean, in the right tone?</li><li><b>Final read:</b> read it as the person receiving it.</li></ul></div>
+    <div class="cell"><h4>Narration</h4><p>"AI doesn't look things up the way you'd expect. It predicts what sounds right. Most of the time that works, but sometimes it invents details. You're still the one sending it, so check the facts, check the fit, and give it a final read."</p></div>
+  </div>
+</div>
+
+<div class="screen">
+  <div class="screen-head"><span class="id">5.1</span><h3>Spot the errors</h3><span class="type">Hotspot activity</span></div>
+  <div class="grid">
+    <div class="cell"><h4>On-screen text</h4><p><b>Maya's notes:</b> new expense policy starts Monday. Submit by the <b>15th</b> of each month. Receipts needed for anything over <b>$25</b>. Manager approval still required. Questions go to Finance.</p><p><b>AI draft:</b> click each sentence that doesn't match her notes. There are 3.</p><ul><li>"Our new expense policy starts this Monday." ✓</li><li>"Please submit expenses by the <b>30th</b> of each month." <span class="no">Error</span></li><li>"Receipts are required for purchases over <b>$50</b>." <span class="no">Error</span></li><li>"Good news: <b>manager approval is no longer required</b>." <span class="no">Error</span></li><li>"Send any questions to the Finance team." ✓</li></ul></div>
+    <div class="cell"><h4>Feedback</h4><ul><li><b>30th:</b> her notes say the 15th. A wrong deadline means late expenses.</li><li><b>$50:</b> the notes say $25. People would skip receipts they need.</li><li><b>Approval:</b> the AI invented this. It would cause real problems.</li><li><b>Correct sentence clicked:</b> "That one matches her notes. Keep looking."</li></ul><p>When all 3 are found: "If Maya had sent this as-is, her whole team would have the wrong rules. Always check the facts."</p></div>
+  </div>
+</div>
+
+<div class="section-label">Wrap-up</div>
+
+<div class="screen">
+  <div class="screen-head"><span class="id">6.0</span><h3>Knowledge check</h3><span class="type">Quiz · 4 questions</span></div>
+  <div class="grid">
+    <div class="cell"><h4>Questions (correct answer marked)</h4><ul><li><b>Q1.</b> Which task is the best fit for an AI assistant? <span class="ok">Drafting a first version of a team announcement</span> / Calculating payroll / Choosing who to lay off / Confirming today's stock price</li><li><b>Q2.</b> Which prompt has a goal, context and format? <span class="ok">"Write a 3-sentence thank-you note to a client who referred us a new customer. Keep it warm and casual."</span> / "Write a thank-you note." / "Be nice to clients." / "Thank-you note, please."</li><li><b>Q3.</b> A coworker pastes a full customer list into a public AI tool to "clean it up." Best response? <span class="ok">Stop, remove the personal info and check the company AI policy</span> / It's fine if it saves time / Only worry if the list is huge / Delete the chat and move on</li><li><b>Q4.</b> The AI gives you a statistic for your report. What do you do? <span class="ok">Find and confirm it in a reliable source before using it</span> / Use it, AI is usually right / Round it to make it look cleaner / Ask the AI if it's sure</li></ul></div>
+    <div class="cell"><h4>Feedback</h4><p>Immediate feedback after each answer that explains why. Q4 also addresses the "ask the AI if it's sure" choice: "The AI may just repeat itself confidently. Check a real source."</p><h4>Scoring</h4><p>Passing: 3 of 4 (75%). Below that, learners can retake the check.</p></div>
+  </div>
+</div>
+
+<div class="screen">
+  <div class="screen-head"><span class="id">6.1</span><h3>Recap and job aid</h3><span class="type">Summary</span></div>
+  <div class="grid">
+    <div class="cell"><h4>On-screen text</h4><p>Score shown. Recap of the four habits:</p><ul><li><b>Goal:</b> say what you want</li><li><b>Context:</b> give it what it needs</li><li><b>Format:</b> describe the answer you want</li><li><b>Check:</b> verify before you use it</li></ul><p>Plus: keep sensitive data out.</p><p>Buttons: <b>Print the job aid</b> · <b>Restart</b></p></div>
+    <div class="cell"><h4>Narration</h4><p>"That's it. Goal, Context, Format, Check, and keep sensitive data out. Print the one-page job aid and keep it near your desk. Maya does."</p></div>
+  </div>
+  <div class="full"><h4>Notes</h4><p class="note">Job aid is a one-page printable card with the framework, the "keep out" list and the 3-step check. Completion would be reported to the LMS (SCORM/xAPI) in a production version.</p></div>
+</div>
+
+<footer>
+  <span>Concept project by Gino DeFalco, 2026</span>
+  <span><a href="ai-design-doc.html">← Design document</a> &nbsp; <a href="ai-module.html">Try the module →</a></span>
+</footer>
+</div>
+</body>
+</html>

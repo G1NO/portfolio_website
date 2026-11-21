@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Design Document — Using AI Assistants at Work | Gino DeFalco</title>
+<meta name="description" content="Instructional design document for a short e-learning module teaching non-technical employees to use AI assistants safely and effectively.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f0d0b;--band:#16130f;--card:#1d1914;--card2:#231e18;--ink:#f2ece2;--muted:#a89e8f;--line:#2e281f;--amber:#e3913f;--amber-soft:rgba(227,145,63,.14)}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:16.5px/1.7 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:var(--amber)}
+  .wrap{max-width:820px;margin:0 auto;padding:0 28px}
+  nav{border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center;height:60px;font-size:14.5px}
+  nav a{color:var(--muted);text-decoration:none}
+  nav a:hover{color:var(--amber)}
+  nav .name{font-family:Fraunces,serif;font-weight:700;font-size:18px;color:var(--ink)}
+  header{padding:64px 0 36px;border-bottom:1px solid var(--line)}
+  .kicker{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);font-weight:600;margin-bottom:12px}
+  h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.2;margin:0}
+  h1{font-size:clamp(32px,5vw,46px)}
+  header p{color:var(--muted);font-size:18px;margin:16px 0 0;max-width:60ch}
+  .meta{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:14px;margin-top:30px}
+  .meta div{background:var(--card);border:1px solid var(--line);border-radius:10px;padding:14px 16px}
+  .meta small{display:block;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .meta b{font-weight:600;font-size:15px}
+  section{padding:44px 0;border-bottom:1px solid var(--line)}
+  section h2{font-size:27px;margin-bottom:16px}
+  section h2 span{color:var(--amber);font-size:18px;margin-right:10px;font-family:Inter,sans-serif;font-weight:600}
+  section h3{font-size:19px;margin:24px 0 8px}
+  p{margin:0 0 14px}
+  ul,ol{margin:0 0 14px;padding-left:22px}
+  li{margin-bottom:6px}
+  .muted{color:var(--muted)}
+  table{width:100%;border-collapse:collapse;margin:10px 0 6px;font-size:15px}
+  th,td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+  th{font-size:12px;letter-spacing:.1em;text-transform:uppercase;color:var(--amber);font-weight:600}
+  td:first-child{white-space:nowrap;color:var(--muted)}
+  .callout{background:var(--card);border:1px solid var(--line);border-left:4px solid var(--amber);border-radius:8px;padding:18px 20px;margin:16px 0}
+  .callout b{color:var(--amber)}
+  .framework{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:14px 0}
+  .framework div{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:14px;text-align:center}
+  .framework b{display:block;font-family:Fraunces,serif;font-size:26px;color:var(--amber)}
+  .framework span{font-size:13.5px;color:var(--muted)}
+  footer{padding:40px 0 60px;color:var(--muted);font-size:14px;display:flex;justify-content:space-between;flex-wrap:wrap;gap:12px}
+  @media (max-width:640px){.framework{grid-template-columns:repeat(2,1fr)} td:first-child{white-space:normal}}
+  @media print{body{background:#fff;color:#111} .meta div,.callout,.framework div{background:#f6f3ee;border-color:#ddd} .muted,header p,th,.kicker{color:#555} nav,footer{display:none}}
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a class="name" href="index.html">Gino DeFalco</a><a href="work-ai-at-work.html">← Back to project</a></div></nav>
+
+<div class="wrap">
+<header>
+  <div class="kicker">Design document · Concept project</div>
+  <h1>Using AI Assistants at Work: A Practical Starter Course</h1>
+  <p>A short, self-paced e-learning module that teaches non-technical employees how to get useful results from AI assistants without putting company data or their own credibility at risk.</p>
+  <div class="meta">
+    <div><small>Audience</small><b>Non-technical employees</b></div>
+    <div><small>Format</small><b>Self-paced e-learning</b></div>
+    <div><small>Seat time</small><b>About 15 minutes</b></div>
+    <div><small>Model</small><b>ADDIE, rapid prototype</b></div>
+  </div>
+</header>
+
+<section>
+  <h2><span>01</span>The problem</h2>
+  <p>Most companies have handed employees AI tools like ChatGPT, Microsoft Copilot or Claude, or employees are already using them on their own. Either way, people are learning by trial and error. That leads to three predictable problems:</p>
+  <ul>
+    <li><b>Weak results.</b> People type one vague sentence, get a generic answer, and decide the tool "doesn't work."</li>
+    <li><b>Data risk.</b> People paste customer details, financials or internal documents into tools without knowing where that data goes.</li>
+    <li><b>Unchecked errors.</b> AI can state wrong information confidently. Employees who don't know that pass mistakes along to customers and leadership.</li>
+  </ul>
+  <p>Long technical courses don't fix this. These employees don't need to know how a language model works. They need a few habits they can use the same day.</p>
+  <div class="callout"><b>Performance goal:</b> After the course, employees use AI assistants for everyday tasks, write prompts that get usable results on the first or second try, keep sensitive information out of the tools, and check AI output before they rely on it.</div>
+</section>
+
+<section>
+  <h2><span>02</span>Audience analysis</h2>
+  <table>
+    <tr><th>Factor</th><th>What we know</th><th>Design impact</th></tr>
+    <tr><td>Roles</td><td>Office staff, customer service, coordinators, supervisors</td><td>Examples come from common tasks: emails, summaries, meeting notes</td></tr>
+    <tr><td>Tech comfort</td><td>Mixed. Comfortable with email and Office, little or no AI experience</td><td>No jargon. Every term explained in plain language the first time</td></tr>
+    <tr><td>Attitude</td><td>Some are excited, some skeptical, some worried AI will replace them</td><td>Frame AI as an assistant that needs their judgment, not a replacement</td></tr>
+    <tr><td>Time</td><td>Busy. Training competes with real work</td><td>Keep it under 15 minutes, and let people leave and come back</td></tr>
+    <tr><td>Access</td><td>Desktop and mobile browsers</td><td>Responsive web module, no plugins or installs</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span>03</span>Learning objectives</h2>
+  <p>By the end of the module, learners will be able to:</p>
+  <ol>
+    <li><b>Identify</b> which everyday tasks AI assistants handle well and which they handle poorly.</li>
+    <li><b>Write</b> a clear prompt using a four-part framework (Goal, Context, Format, Check).</li>
+    <li><b>Decide</b> what information is safe to share with an AI tool and what is not.</li>
+    <li><b>Review</b> AI output for errors before using it.</li>
+  </ol>
+  <h3>The core framework</h3>
+  <p>The whole course is built around one memorable model that fits on a sticky note:</p>
+  <div class="framework">
+    <div><b>G</b><span>Goal: what do you want?</span></div>
+    <div><b>C</b><span>Context: what does it need to know?</span></div>
+    <div><b>F</b><span>Format: what should the answer look like?</span></div>
+    <div><b>C</b><span>Check: review it before you use it</span></div>
+  </div>
+</section>
+
+<section>
+  <h2><span>04</span>Instructional approach</h2>
+  <h3>Strategy</h3>
+  <p>Scenario-based and hands-on. Learners follow a relatable character, a busy coordinator named Maya, through one workday where she uses AI for real tasks. Every concept is introduced through her situation and then practiced right away. Learners do something on almost every screen instead of reading slides.</p>
+  <h3>Structure</h3>
+  <table>
+    <tr><th>Section</th><th>Content</th><th>Practice activity</th></tr>
+    <tr><td>Intro</td><td>Meet Maya and her packed morning. Why AI skills matter now.</td><td>Quick poll: how do you use AI today?</td></tr>
+    <tr><td>1. Good fit or not</td><td>What AI is good at (drafting, summarizing, brainstorming) and where it struggles (facts, math, current events, judgment calls)</td><td>Sort 6 tasks into "Good fit" or "Be careful"</td></tr>
+    <tr><td>2. Better prompts</td><td>The Goal, Context, Format framework, with before-and-after examples</td><td>Prompt makeover: build a stronger prompt from parts</td></tr>
+    <tr><td>3. Protect data</td><td>What never goes into an AI tool, and the "would I post it on the break room wall?" test</td><td>Share or don't share: 5 quick decisions</td></tr>
+    <tr><td>4. Check the output</td><td>Why AI makes things up, and a 3-step check</td><td>Spot the errors in an AI-written email</td></tr>
+    <tr><td>Wrap-up</td><td>Final scenario and recap</td><td>4-question knowledge check, plus a downloadable job aid</td></tr>
+  </table>
+  <h3>Design principles</h3>
+  <ul>
+    <li><b>Show, then do.</b> Every concept gets an example first, then an activity.</li>
+    <li><b>Immediate feedback</b> that explains <i>why</i>, not just right or wrong.</li>
+    <li><b>Plain language</b> at about an 8th-grade reading level.</li>
+    <li><b>Accessible:</b> keyboard navigable, readable contrast, no information carried by color alone, works with screen readers.</li>
+    <li><b>Performance support:</b> a one-page Goal, Context, Format, Check job aid learners keep at their desk.</li>
+  </ul>
+</section>
+
+<section>
+  <h2><span>05</span>Evaluation plan</h2>
+  <p>Built around the Kirkpatrick model so the course can show impact, not just completions.</p>
+  <table>
+    <tr><th>Level</th><th>Question</th><th>Measure</th></tr>
+    <tr><td>1. Reaction</td><td>Did learners find it useful and relevant?</td><td>3-question survey at the end of the module</td></tr>
+    <tr><td>2. Learning</td><td>Can they apply the framework?</td><td>Knowledge check scores (target: 80% or higher)</td></tr>
+    <tr><td>3. Behavior</td><td>Are they using AI better on the job?</td><td>30-day follow-up survey, plus manager check-ins on AI use and data incidents</td></tr>
+    <tr><td>4. Results</td><td>Did it help the business?</td><td>Time saved on routine writing tasks, and fewer data-handling incidents involving AI tools</td></tr>
+  </table>
+</section>
+
+<section>
+  <h2><span>06</span>Development plan</h2>
+  <ol>
+    <li><b>Analysis:</b> audience profile, task list and objectives (this document)</li>
+    <li><b>Design:</b> screen-by-screen storyboard with narration, on-screen text and interactions</li>
+    <li><b>Development:</b> responsive HTML module with built-in interactions and feedback</li>
+    <li><b>Review:</b> test with 3–5 people from the target audience, then revise</li>
+    <li><b>Launch and evaluate:</b> publish, then collect Level 1–3 data</li>
+  </ol>
+  <p class="muted">Tools: storyboard written in a doc; module built as a responsive web page (could also be built in Articulate Rise or Storyline from the same storyboard).</p>
+</section>
+
+<footer>
+  <span>Concept project by Gino DeFalco, 2026</span>
+  <span><a href="ai-storyboard.html">View the storyboard →</a> &nbsp; <a href="ai-module.html">Try the module →</a></span>
+</footer>
+</div>
+</body>
+</html>

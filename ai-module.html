@@ -1,0 +1,385 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Using AI Assistants at Work | E-learning module by Gino DeFalco</title>
+<meta name="description" content="A 15-minute interactive e-learning module on using AI assistants at work safely and effectively.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f0d0b;--card:#1d1914;--card2:#262019;--ink:#f2ece2;--muted:#a89e8f;--line:#352e24;--amber:#e3913f;--amber-soft:rgba(227,145,63,.14);--green:#7fbf8a;--green-soft:rgba(127,191,138,.13);--red:#e88a7a;--red-soft:rgba(232,138,122,.13)}
+  *{box-sizing:border-box}
+  html,body{height:100%}
+  body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.65 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased;display:flex;flex-direction:column}
+  a{color:var(--amber)}
+  h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.2;margin:0}
+  .top{display:flex;align-items:center;gap:16px;padding:14px 22px;border-bottom:1px solid var(--line)}
+  .top .title{font-weight:600;font-size:14.5px}
+  .top .title span{color:var(--muted);font-weight:400}
+  .top a{margin-left:auto;font-size:13.5px;color:var(--muted);text-decoration:none}
+  .top a:hover{color:var(--amber)}
+  .progress{height:4px;background:var(--line)}
+  .progress div{height:100%;background:var(--amber);width:0;transition:width .35s}
+  main{flex:1;display:flex;justify-content:center;padding:36px 22px 28px}
+  .stage{width:100%;max-width:780px}
+  .stage:focus{outline:none}
+  .section-tag{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);font-weight:600;margin-bottom:10px}
+  .stage h2{font-size:clamp(26px,4vw,36px);margin-bottom:16px}
+  .stage p{margin:0 0 14px}
+  .lead{font-size:18.5px;color:var(--muted)}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:18px 0}
+  .pill{display:inline-block;font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:3px 10px;border-radius:999px;margin-bottom:10px}
+  .pill.good{background:var(--green-soft);color:var(--green)}
+  .pill.care{background:var(--red-soft);color:var(--red)}
+  ul.clean{margin:0;padding-left:20px}
+  ul.clean li{margin-bottom:6px}
+  .maya{display:flex;gap:18px;align-items:flex-start}
+  .avatar{flex:none;width:64px;height:64px;border-radius:50%;background:linear-gradient(135deg,#e3913f,#b5532a);display:grid;place-items:center;font-family:Fraunces,serif;font-size:28px;font-weight:700;color:#1a120a}
+  .todo{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:16px 0}
+  .todo div{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:10px 14px;font-size:15px}
+  .opts{display:grid;gap:10px;margin:14px 0}
+  .opt{display:block;width:100%;text-align:left;font:inherit;font-size:16px;color:var(--ink);background:var(--card);border:1px solid var(--line);border-radius:10px;padding:13px 16px;cursor:pointer;transition:border-color .15s,background .15s}
+  .opt:hover:not(:disabled){border-color:var(--amber)}
+  .opt:focus-visible,.btn:focus-visible,.choice:focus-visible,.sent:focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+  .opt.right{border-color:var(--green);background:var(--green-soft)}
+  .opt.wrong{border-color:var(--red);background:var(--red-soft)}
+  .opt:disabled{cursor:default}
+  .feedback{margin-top:12px;padding:14px 16px;border-radius:10px;font-size:15.5px;display:none}
+  .feedback.show{display:block}
+  .feedback.good{background:var(--green-soft);border:1px solid rgba(127,191,138,.4)}
+  .feedback.bad{background:var(--red-soft);border:1px solid rgba(232,138,122,.4)}
+  .feedback.info{background:var(--amber-soft);border:1px solid rgba(227,145,63,.4)}
+  .feedback b{display:block;margin-bottom:2px}
+  .task{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin-bottom:12px}
+  .task .q{font-weight:500;margin-bottom:10px}
+  .choices{display:flex;gap:10px;flex-wrap:wrap}
+  .choice{font:inherit;font-size:14.5px;font-weight:600;padding:9px 16px;border-radius:8px;cursor:pointer;border:1px solid var(--line);background:var(--card2);color:var(--ink)}
+  .choice:hover:not(:disabled){border-color:var(--amber)}
+  .choice.right{border-color:var(--green);background:var(--green-soft);color:var(--green)}
+  .choice.wrong{border-color:var(--red);background:var(--red-soft);color:var(--red)}
+  .choice:disabled{cursor:default;opacity:.95}
+  .task .fb{font-size:14.5px;color:var(--muted);margin-top:10px;display:none}
+  .task .fb.show{display:block}
+  .prompt-box{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:14.5px;background:#0b0a08;border:1px solid var(--line);border-radius:10px;padding:16px;min-height:60px;white-space:pre-wrap;color:#e9dfcf}
+  .prompt-box .ph{color:#6e655a}
+  .prompt-box .g{color:#f0b072}.prompt-box .c{color:#9fd3a8}.prompt-box .f{color:#9cc3e6}
+  .part-label{font-size:13px;letter-spacing:.12em;text-transform:uppercase;font-weight:600;margin:20px 0 4px}
+  .part-label.g{color:#f0b072}.part-label.c{color:#9fd3a8}.part-label.f{color:#9cc3e6}
+  .ai-reply{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:16px 18px;font-size:15.5px;margin-top:12px}
+  .ai-reply small{display:block;color:var(--muted);font-size:12px;letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px}
+  .notes{background:#2a2418;border:1px dashed #6b5a3b;border-radius:10px;padding:14px 16px;font-size:15px;margin:12px 0 18px}
+  .email{background:#f4efe6;color:#1e1b16;border-radius:10px;padding:20px 22px;font-size:15.5px}
+  .email .hdr{font-size:13px;color:#6b645a;border-bottom:1px solid #ddd5c6;padding-bottom:10px;margin-bottom:12px}
+  .sent{display:block;width:100%;text-align:left;font:inherit;font-size:15.5px;color:#1e1b16;background:transparent;border:1px solid transparent;border-radius:6px;padding:6px 8px;margin:2px -8px;cursor:pointer}
+  .sent:hover{background:#ece4d4}
+  .sent.flagged{background:#f6d7cf;border-color:#d9806e;text-decoration:line-through;text-decoration-color:#c0503c}
+  .sent.okay{background:#dcebdc}
+  .counter{font-size:14px;color:var(--muted);margin-top:10px}
+  .framework{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:18px 0}
+  .framework div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 12px;text-align:center}
+  .framework b{display:block;font-family:Fraunces,serif;font-size:30px;color:var(--amber);line-height:1.1}
+  .framework strong{display:block;font-size:15px;margin:4px 0 2px}
+  .framework span{font-size:13px;color:var(--muted)}
+  .score{font-family:Fraunces,serif;font-size:56px;color:var(--amber);line-height:1}
+  .nav{display:flex;justify-content:space-between;align-items:center;gap:12px;max-width:780px;width:100%;margin:0 auto;padding:16px 22px 26px}
+  .btn{font:inherit;font-weight:600;font-size:15px;padding:12px 22px;border-radius:8px;border:1px solid #4a4134;background:transparent;color:var(--ink);cursor:pointer}
+  .btn.primary{background:var(--amber);border-color:var(--amber);color:#1a120a}
+  .btn:disabled{opacity:.35;cursor:not-allowed}
+  .count{font-size:13.5px;color:var(--muted)}
+  .hint{font-size:14px;color:var(--muted);margin-top:8px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  #jobaid{display:none}
+  @media (max-width:640px){.two,.todo{grid-template-columns:1fr}.framework{grid-template-columns:repeat(2,1fr)}main{padding-top:24px}}
+  @media print{
+    body *{visibility:hidden}
+    #jobaid,#jobaid *{visibility:visible}
+    #jobaid{display:block;position:absolute;inset:0;padding:36px;color:#111;background:#fff;font-family:Inter,Arial,sans-serif}
+    #jobaid h1{font-size:26px;margin-bottom:4px}
+    #jobaid .sub{color:#555;margin-bottom:18px}
+    #jobaid .row{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-bottom:18px}
+    #jobaid .row div{border:2px solid #e3913f;border-radius:10px;padding:12px}
+    #jobaid .row b{font-size:24px;color:#c06d1f;display:block}
+    #jobaid h2{font-size:17px;margin:16px 0 6px}
+    #jobaid ul{margin:0;padding-left:18px}
+    #jobaid .foot{margin-top:24px;font-size:11px;color:#777}
+  }
+</style>
+</head>
+<body>
+<div class="top">
+  <div class="title">Using AI Assistants at Work <span>· e-learning module</span></div>
+  <a href="work-ai-at-work.html">About this project →</a>
+</div>
+<div class="progress" aria-hidden="true"><div id="bar"></div></div>
+<main><div class="stage" id="stage" tabindex="-1"></div></main>
+<div class="nav">
+  <button class="btn" id="back">← Back</button>
+  <span class="count" id="count" aria-live="polite"></span>
+  <button class="btn primary" id="next">Next →</button>
+</div>
+<div class="sr" aria-live="polite" id="live"></div>
+
+<div id="jobaid" aria-hidden="true">
+  <h1>Using AI at Work: Quick Guide</h1>
+  <div class="sub">Keep this near your desk.</div>
+  <div class="row">
+    <div><b>G</b><strong>Goal</strong><br>Say exactly what you want.</div>
+    <div><b>C</b><strong>Context</strong><br>Give it what it needs to know.</div>
+    <div><b>F</b><strong>Format</strong><br>Length, tone, structure.</div>
+    <div><b>C</b><strong>Check</strong><br>Verify before you use it.</div>
+  </div>
+  <h2>Good fit</h2>
+  <ul><li>Drafting emails and documents</li><li>Summarizing your own notes or long text</li><li>Changing tone, brainstorming, simplifying</li></ul>
+  <h2>Be careful</h2>
+  <ul><li>Exact facts, figures, prices and recent events</li><li>Math (use a spreadsheet)</li><li>Decisions about people</li></ul>
+  <h2>Keep out of AI tools</h2>
+  <ul><li>Customer personal info, passwords, confidential financials, unreleased plans, HR or medical info</li><li>Test: would I be OK if this showed up outside the company?</li><li>Use placeholders like [Customer] and [Account #], and follow your company's AI policy</li></ul>
+  <h2>The 3-step check</h2>
+  <ul><li><b>Facts:</b> verify names, numbers, dates and policies against a real source</li><li><b>Fit:</b> does it say what you mean, in the right tone?</li><li><b>Final read:</b> read it as the person receiving it</li></ul>
+  <div class="foot">Using AI Assistants at Work · concept module by Gino DeFalco · ginodefalco.com</div>
+</div>
+
+<script>
+(function(){
+  const stage=document.getElementById('stage'), bar=document.getElementById('bar'),
+        backBtn=document.getElementById('back'), nextBtn=document.getElementById('next'),
+        countEl=document.getElementById('count'), live=document.getElementById('live');
+  const state={i:0, done:{}, quiz:{}, flagged:{}, sort:{}, share:{}, prompt:{}};
+  const KEY='gd-ai-module-v1';
+  try{const s=JSON.parse(localStorage.getItem(KEY)||'null'); if(s&&typeof s.i==='number') Object.assign(state,s);}catch(e){}
+  function save(){try{localStorage.setItem(KEY,JSON.stringify(state));}catch(e){}}
+  function say(t){live.textContent='';setTimeout(()=>live.textContent=t,30);}
+  const esc=s=>s.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+
+  /* ---------- data ---------- */
+  const SORT=[
+    {t:'Draft a friendly reminder email about a deadline',a:'good',fb:'Drafting is a sweet spot. Maya just reviews the tone.'},
+    {t:'Turn her own meeting notes into 5 bullet points',a:'good',fb:'Summarizing her own notes works well, since AI is working from real info she provided.'},
+    {t:'Brainstorm names for a team event',a:'good',fb:'Brainstorming is low-risk and fast.'},
+    {t:"Look up a vendor's current price",a:'care',fb:"AI may give an outdated or made-up number. Check the vendor's site."},
+    {t:'Add up quarterly budget totals for a report',a:'care',fb:'AI can make math mistakes. Use a spreadsheet.'},
+    {t:'Decide which employee should get a promotion',a:'care',fb:"Decisions about people need human judgment and context AI doesn't have."}
+  ];
+  const PROMPT={
+    g:{label:'Goal',opts:[
+      {t:'Write something about the order',ok:false,fb:"Too vague. The AI won't know it's a delay or that it's an apology."},
+      {t:'Write a short apology email telling a customer their order is delayed by one week',ok:true,fb:'Clear goal: what to write, who it’s for and what happened.'},
+      {t:'Help me with customers',ok:false,fb:'That could mean anything. Name the exact task.'}]},
+    c:{label:'Context',opts:[
+      {t:'Customers are important to us',ok:false,fb:"True, but it doesn't tell the AI anything it can use."},
+      {t:"The customer is a long-time client, the delay is on our supplier's end, and we're offering free shipping on their next order",ok:true,fb:'Now the AI knows the relationship, the reason and the offer.'},
+      {t:'No context needed, the AI knows our business',ok:false,fb:'It doesn’t. The AI only knows what you tell it.'}]},
+    f:{label:'Format',opts:[
+      {t:'Make it good',ok:false,fb:'"Good" means different things to different people. Describe length and tone.'},
+      {t:'Under 120 words, warm but professional, end with [My name] and [Phone]',ok:true,fb:'Specific length, tone and ending, plus placeholders instead of real details.'},
+      {t:'As long as possible',ok:false,fb:'Long emails get skimmed. Ask for the length that fits.'}]}
+  };
+  const SHARE=[
+    {t:"A press release that's already public, to shorten it",a:'ok',fb:"Already public, so there's no risk."},
+    {t:"A customer's name, address and account number, to write them a letter",a:'no',fb:'Use placeholders instead, and fill in the real details yourself afterward.'},
+    {t:'Her login password, to get help with an error',a:'no',fb:'Never share it with any tool or person. Describe the error message instead.'},
+    {t:'A general question: how to write a polite follow-up email',a:'ok',fb:'No company info involved.'},
+    {t:"Draft quarterly results before they're announced",a:'no',fb:'Confidential until announced. Only use tools your company has approved for this.'}
+  ];
+  const SENTS=[
+    {t:'Hi team,',err:false,skip:true},
+    {t:'Our new expense policy starts this Monday.',err:false},
+    {t:'Please submit expenses by the 30th of each month.',err:true,fb:'Her notes say the 15th. A wrong deadline means late expenses.'},
+    {t:'Receipts are required for purchases over $50.',err:true,fb:'The notes say $25. People would skip receipts they need.'},
+    {t:'Good news: manager approval is no longer required.',err:true,fb:'The AI invented this. It would cause real problems.'},
+    {t:'Send any questions to the Finance team.',err:false},
+    {t:'Thanks, Maya',err:false,skip:true}
+  ];
+  const QUIZ=[
+    {q:'Which task is the best fit for an AI assistant?',o:['Calculating payroll for the team','Drafting a first version of a team announcement','Choosing who to lay off','Confirming today’s stock price'],a:1,
+     fb:['Payroll is math with real consequences. Use your payroll system.','Right. Drafting is where AI shines, and you review it before sending.','Decisions about people need human judgment.','AI may not have current data. Check a live source.']},
+    {q:'Which prompt has a goal, context and format?',o:['"Write a thank-you note."','"Be nice to clients."','"Write a 3-sentence thank-you note to a client who referred us a new customer. Keep it warm and casual."','"Thank-you note, please."'],a:2,
+     fb:['Goal only. No context or format.','No clear goal, context or format.','Right. Goal (thank-you note), context (they referred a customer), format (3 sentences, warm and casual).','Goal only. The AI has to guess everything else.']},
+    {q:'A coworker pastes a full customer list into a public AI tool to "clean it up." What’s the best response?',o:['It’s fine if it saves time','Stop, remove the personal info and check the company AI policy','Only worry if the list is huge','Delete the chat and move on'],a:1,
+     fb:['Saving time doesn’t outweigh exposing customer data.','Right. Personal info stays out, and the company policy decides which tools are approved.','Even one customer’s data matters.','Deleting the chat may not remove the data. Report it per your policy.']},
+    {q:'The AI gives you a statistic for your report. What do you do?',o:['Use it, AI is usually right','Round it so it looks cleaner','Find and confirm it in a reliable source before using it','Ask the AI if it’s sure'],a:2,
+     fb:['"Usually" isn’t good enough for a report with your name on it.','Rounding a made-up number is still a made-up number.','Right. Facts get checked against a real source.','The AI may just repeat itself confidently. Check a real source.']}
+  ];
+
+  /* ---------- screens ---------- */
+  const S=[];
+  // 1.0 Title
+  S.push({sec:'',render(){return `
+    <div class="section-tag">E-learning module · about 15 minutes</div>
+    <h2 style="font-size:clamp(34px,6vw,52px)">Using AI Assistants at Work</h2>
+    <p class="lead">AI assistants can save you real time at work, if you know how to use them. In the next fifteen minutes, you'll learn four habits that make the difference.</p>
+    <div class="framework" aria-label="The four habits">
+      <div><b>G</b><strong>Goal</strong></div><div><b>C</b><strong>Context</strong></div><div><b>F</b><strong>Format</strong></div><div><b>C</b><strong>Check</strong></div>
+    </div>
+    <p class="hint">Use the Next button to move through the course. Your progress is saved in this browser.</p>`;},gate:()=>true,nextLabel:'Start →'});
+  // 1.1 Meet Maya
+  S.push({sec:'Introduction',render(){
+    const p=state.poll;
+    return `<div class="section-tag">Introduction</div><h2>Meet Maya</h2>
+    <div class="maya"><div class="avatar" aria-hidden="true">M</div><div>
+      <p>Maya is an operations coordinator. It's 9:00 a.m. and her morning is already full:</p></div></div>
+    <div class="todo"><div>📥 40 unread emails</div><div>📝 Meeting notes to summarize</div><div>✉️ A customer letter to write</div><div>📊 A report due at noon</div></div>
+    <p>Her company just rolled out an AI assistant, and she's not sure where to start. Let's follow her morning.</p>
+    <div class="card"><p style="margin-bottom:4px"><b>Quick poll:</b> How do you use AI at work today?</p>
+    <div class="opts" role="group" aria-label="Poll">${["I haven't tried it yet",'A few times','Every week','Every day'].map((o,k)=>`<button class="opt ${p===k?'right':''}" data-poll="${k}">${o}</button>`).join('')}</div>
+    <div class="feedback info ${p!=null?'show':''}" id="pollfb"><b>Thanks!</b>Wherever you're starting, this course meets you there.</div></div>`;},
+    bind(){stage.querySelectorAll('[data-poll]').forEach(b=>b.onclick=()=>{state.poll=+b.dataset.poll;save();draw();say('Thanks. Wherever you are starting, this course meets you there.');});},
+    gate:()=>state.poll!=null, need:'Answer the poll to continue.'});
+  // 2.0 content
+  S.push({sec:'Section 1 · Good fit or not',render(){return `<div class="section-tag">Section 1 · Good fit or not</div><h2>What AI is good at, and what it's not</h2>
+    <p class="lead">AI assistants are great with words. They're much weaker with facts, numbers and judgment calls, and they can sound sure of themselves and still be wrong.</p>
+    <div class="two">
+      <div class="card"><span class="pill good">Good fit</span><ul class="clean"><li>Drafting emails and documents</li><li>Summarizing long text</li><li>Changing tone</li><li>Brainstorming ideas</li><li>Explaining something in simpler words</li></ul></div>
+      <div class="card"><span class="pill care">Be careful</span><ul class="clean"><li>Exact facts and figures</li><li>Math</li><li>Recent events and prices</li><li>Decisions about people</li><li>Anything that depends on company info you haven't given it</li></ul></div>
+    </div>`;},gate:()=>true});
+  // 2.1 sort
+  S.push({sec:'Section 1 · Good fit or not',render(){
+    const n=Object.keys(state.sort).length, right=SORT.filter((x,k)=>state.sort[k]===x.a).length;
+    return `<div class="section-tag">Section 1 · Activity</div><h2>Sort Maya's tasks</h2>
+    <p>Maya has six tasks. For each one, choose <b>Good fit</b> or <b>Be careful</b>.</p>
+    ${SORT.map((x,k)=>{const c=state.sort[k];return `<div class="task"><div class="q">${k+1}. ${x.t}</div>
+      <div class="choices" role="group" aria-label="Task ${k+1}">
+        <button class="choice ${c?(x.a==='good'?'right':(c==='good'?'wrong':'')):''}" data-s="${k}" data-v="good" ${c?'disabled':''}>Good fit</button>
+        <button class="choice ${c?(x.a==='care'?'right':(c==='care'?'wrong':'')):''}" data-s="${k}" data-v="care" ${c?'disabled':''}>Be careful</button>
+      </div><div class="fb ${c?'show':''}">${c?(c===x.a?'<b style="color:var(--green)">Correct.</b> ':'<b style="color:var(--red)">Not quite.</b> '):''}${x.fb}</div></div>`;}).join('')}
+    ${n===SORT.length?`<div class="feedback info show"><b>You got ${right} of ${SORT.length}.</b>Rule of thumb: AI is strong with words, weaker with facts, math and people decisions.</div>`:''}`;},
+    bind(){stage.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{const k=b.dataset.s;state.sort[k]=b.dataset.v;save();draw(true);
+      const x=SORT[k];say((b.dataset.v===x.a?'Correct. ':'Not quite. ')+x.fb);});},
+    gate:()=>Object.keys(state.sort).length===SORT.length, need:'Sort all six tasks to continue.'});
+  // 3.0 content
+  S.push({sec:'Section 2 · Better prompts',render(){return `<div class="section-tag">Section 2 · Better prompts</div><h2>Vague prompts get vague answers</h2>
+    <p class="lead">The AI only knows what you tell it. A one-line prompt gets a one-size-fits-all answer.</p>
+    <div class="card"><p style="margin-bottom:6px"><b>Weak prompt</b></p><div class="prompt-box">Write an email about the order.</div>
+    <p class="hint" style="margin-top:10px">Result: a generic email that doesn't say what's happening, who it's for or what to do next.</p></div>
+    <p style="margin-top:22px">A strong prompt has three parts:</p>
+    <div class="framework" style="grid-template-columns:repeat(3,1fr)">
+      <div><b>G</b><strong>Goal</strong><span>What do you want?</span></div>
+      <div><b>C</b><strong>Context</strong><span>What does it need to know?</span></div>
+      <div><b>F</b><strong>Format</strong><span>What should the answer look like?</span></div>
+    </div>
+    <p class="hint">The fourth part, <b>Check</b>, comes after the AI answers. More on that in Section 4.</p>`;},gate:()=>true});
+  // 3.1 prompt makeover
+  S.push({sec:'Section 2 · Better prompts',render(){
+    const pick=k=>state.prompt[k], okp=k=>pick(k)!=null&&PROMPT[k].opts[pick(k)].ok, all=['g','c','f'].every(okp);
+    const seg=(k,cls)=>okp(k)?`<span class="${cls}">${esc(PROMPT[k].opts[pick(k)].t)}.</span>`:`<span class="ph">[${PROMPT[k].label}]</span>`;
+    return `<div class="section-tag">Section 2 · Activity</div><h2>Prompt makeover</h2>
+    <p>A customer's order is delayed and Maya needs to email them. Build her prompt by picking the best option for each part.</p>
+    <div class="prompt-box" aria-live="polite">${seg('g','g')} ${seg('c','c')} ${seg('f','f')}</div>
+    ${['g','c','f'].map(k=>{const P=PROMPT[k], p=pick(k); return `<div class="part-label ${k}">${P.label}</div>
+      <div class="opts" role="group" aria-label="${P.label}">${P.opts.map((o,j)=>`<button class="opt ${p===j?(o.ok?'right':'wrong'):''}" data-p="${k}" data-j="${j}" ${okp(k)?'disabled':''}>${esc(o.t)}</button>`).join('')}</div>
+      ${p!=null?`<div class="feedback ${P.opts[p].ok?'good':'bad'} show"><b>${P.opts[p].ok?'Nice.':'Try again.'}</b>${P.opts[p].fb}</div>`:''}`;}).join('')}
+    ${all?`<div class="ai-reply"><small>AI response</small>
+      <p><b>Subject:</b> An update on your order</p>
+      <p>Hi [Customer],</p>
+      <p>I'm sorry to let you know your order is running about one week behind. The delay is on our supplier's end, and we're staying on top of it so it reaches you as soon as possible.</p>
+      <p>As a thank-you for your patience, and for being such a loyal customer, your next order ships free.</p>
+      <p>Thank you for understanding. If you have any questions, I'm happy to help.</p>
+      <p style="margin:0">[My name]<br>[Phone]</p></div>
+      <div class="feedback info show"><b>See the difference?</b>Same tool, much better first draft. Maya just adds the real name and number and gives it a read.</div>`:''}`;},
+    bind(){stage.querySelectorAll('[data-p]').forEach(b=>b.onclick=()=>{const k=b.dataset.p,j=+b.dataset.j;state.prompt[k]=j;save();draw(true);
+      const o=PROMPT[k].opts[j];say((o.ok?'Nice. ':'Try again. ')+o.fb);});},
+    gate:()=>['g','c','f'].every(k=>state.prompt[k]!=null&&PROMPT[k].opts[state.prompt[k]].ok), need:'Pick the best option for all three parts to continue.'});
+  // 4.0 content
+  S.push({sec:'Section 3 · Protect data',render(){return `<div class="section-tag">Section 3 · Protect data</div><h2>What never goes into an AI tool</h2>
+    <p class="lead">Whatever you paste into an AI tool may be stored, and depending on the tool, it may be used for training.</p>
+    <div class="two">
+      <div class="card"><span class="pill care">Keep out</span><ul class="clean"><li>Customer personal info (names with account numbers, addresses, ID numbers)</li><li>Passwords and login details</li><li>Confidential financials and unreleased plans</li><li>HR or medical info about coworkers</li></ul></div>
+      <div class="card"><span class="pill good">Better habits</span><ul class="clean"><li><b>Quick test:</b> would I be OK if this showed up outside the company?</li><li>Swap real details for placeholders like <b>[Customer]</b> or <b>[Account #]</b></li><li>Follow your company's AI policy. Approved internal tools may have different rules.</li></ul></div>
+    </div>`;},gate:()=>true});
+  // 4.1 share
+  S.push({sec:'Section 3 · Protect data',render(){
+    const n=Object.keys(state.share).length, right=SHARE.filter((x,k)=>state.share[k]===x.a).length;
+    return `<div class="section-tag">Section 3 · Activity</div><h2>Share or don't share?</h2>
+    <p>Maya wants to paste each of these into a public AI tool. Is it OK?</p>
+    ${SHARE.map((x,k)=>{const c=state.share[k];return `<div class="task"><div class="q">${k+1}. ${x.t}</div>
+      <div class="choices" role="group" aria-label="Item ${k+1}">
+        <button class="choice ${c?(x.a==='ok'?'right':(c==='ok'?'wrong':'')):''}" data-h="${k}" data-v="ok" ${c?'disabled':''}>OK to share</button>
+        <button class="choice ${c?(x.a==='no'?'right':(c==='no'?'wrong':'')):''}" data-h="${k}" data-v="no" ${c?'disabled':''}>Don't share</button>
+      </div><div class="fb ${c?'show':''}">${c?(c===x.a?'<b style="color:var(--green)">Correct.</b> ':'<b style="color:var(--red)">Not quite.</b> '):''}${x.fb}</div></div>`;}).join('')}
+    ${n===SHARE.length?`<div class="feedback info show"><b>You got ${right} of ${SHARE.length}.</b>When in doubt, take it out, or use a placeholder.</div>`:''}`;},
+    bind(){stage.querySelectorAll('[data-h]').forEach(b=>b.onclick=()=>{const k=b.dataset.h;state.share[k]=b.dataset.v;save();draw(true);
+      const x=SHARE[k];say((b.dataset.v===x.a?'Correct. ':'Not quite. ')+x.fb);});},
+    gate:()=>Object.keys(state.share).length===SHARE.length, need:'Decide on all five items to continue.'});
+  // 5.0 content
+  S.push({sec:'Section 4 · Check the output',render(){return `<div class="section-tag">Section 4 · Check the output</div><h2>AI can be confidently wrong</h2>
+    <p class="lead">AI doesn't look things up the way you'd expect. It predicts what sounds right. Sometimes it invents names, numbers, dates, policies, even links. This is called a "hallucination."</p>
+    <p>You're still the one sending it. Before you use anything an AI writes, run the 3-step check:</p>
+    <div class="framework" style="grid-template-columns:repeat(3,1fr)">
+      <div><b>1</b><strong>Facts</strong><span>Verify names, numbers, dates and policies against a real source</span></div>
+      <div><b>2</b><strong>Fit</strong><span>Does it say what you mean, in the right tone?</span></div>
+      <div><b>3</b><strong>Final read</strong><span>Read it as the person receiving it</span></div>
+    </div>`;},gate:()=>true});
+  // 5.1 spot errors
+  S.push({sec:'Section 4 · Check the output',render(){
+    const found=SENTS.filter((s,k)=>s.err&&state.flagged[k]).length, total=SENTS.filter(s=>s.err).length, last=state.lastFlag;
+    let fb='';
+    if(last!=null){const s=SENTS[last]; fb=s.err?`<div class="feedback good show"><b>Good catch.</b>${s.fb}</div>`:`<div class="feedback bad show"><b>That one's fine.</b>It matches her notes. Keep looking.</div>`;}
+    return `<div class="section-tag">Section 4 · Activity</div><h2>Spot the errors</h2>
+    <p>Maya asked the AI to turn her notes into a team email. Compare the draft to her notes and <b>click each sentence that's wrong</b>. There are ${total}.</p>
+    <div class="notes"><b>Maya's notes:</b> New expense policy starts Monday. Submit by the <b>15th</b> of each month. Receipts needed for anything over <b>$25</b>. Manager approval still required. Questions go to Finance.</div>
+    <div class="email"><div class="hdr">To: Operations team &nbsp;·&nbsp; Subject: New expense policy</div>
+      ${SENTS.map((s,k)=>s.skip?`<p style="margin:6px 0">${s.t}</p>`:`<button class="sent ${state.flagged[k]?(s.err?'flagged':'okay'):''}" data-e="${k}" ${state.flagged[k]&&s.err?'disabled':''} aria-pressed="${!!state.flagged[k]}">${s.t}</button>`).join('')}
+    </div>
+    <div class="counter" aria-live="polite">Errors found: ${found} of ${total}</div>
+    ${fb}
+    ${found===total?`<div class="feedback info show"><b>All ${total} found.</b>If Maya had sent this as-is, her whole team would have the wrong rules. Always check the facts.</div>`:''}`;},
+    bind(){stage.querySelectorAll('[data-e]').forEach(b=>b.onclick=()=>{const k=+b.dataset.e;state.flagged[k]=true;state.lastFlag=k;save();draw(true);
+      const s=SENTS[k];say(s.err?'Good catch. '+s.fb:'That one matches her notes. Keep looking.');});},
+    gate:()=>SENTS.every((s,k)=>!s.err||state.flagged[k]), need:'Find all three errors to continue.'});
+  // 6.0 quiz — one screen per question
+  QUIZ.forEach((Q,qi)=>S.push({sec:'Knowledge check',render(){
+    const a=state.quiz[qi];
+    return `<div class="section-tag">Knowledge check · Question ${qi+1} of ${QUIZ.length}</div><h2 style="font-size:clamp(22px,3.4vw,30px)">${esc(Q.q)}</h2>
+    <div class="opts" role="group" aria-label="Answer choices">${Q.o.map((o,k)=>`<button class="opt ${a!=null?(k===Q.a?'right':(k===a?'wrong':'')):''}" data-q="${k}" ${a!=null?'disabled':''}>${esc(o)}</button>`).join('')}</div>
+    ${a!=null?`<div class="feedback ${a===Q.a?'good':'bad'} show"><b>${a===Q.a?'Correct.':'Not quite.'}</b>${Q.fb[a]}${a!==Q.a?' The best answer is highlighted.':''}</div>`:''}`;},
+    bind(){stage.querySelectorAll('[data-q]').forEach(b=>b.onclick=()=>{const k=+b.dataset.q;state.quiz[qi]=k;save();draw(true);say((k===Q.a?'Correct. ':'Not quite. ')+Q.fb[k]);});},
+    gate:()=>state.quiz[qi]!=null, need:'Choose an answer to continue.'}));
+  // 6.1 results
+  S.push({sec:'Wrap-up',render(){
+    const sc=QUIZ.filter((Q,k)=>state.quiz[k]===Q.a).length, pass=sc>=3;
+    return `<div class="section-tag">Wrap-up</div>
+    <div style="display:flex;align-items:center;gap:22px;flex-wrap:wrap;margin-bottom:10px"><div class="score">${sc}/${QUIZ.length}</div>
+      <div><h2 style="margin:0">${pass?'Nice work. You passed.':'Almost there.'}</h2><p class="hint" style="margin:4px 0 0">${pass?'Passing score is 3 of 4.':'Passing score is 3 of 4. Retake the knowledge check to finish.'}</p></div></div>
+    <p class="lead" style="margin-top:16px">That's the course. Four habits, plus one rule:</p>
+    <div class="framework">
+      <div><b>G</b><strong>Goal</strong><span>Say what you want</span></div>
+      <div><b>C</b><strong>Context</strong><span>Give it what it needs</span></div>
+      <div><b>F</b><strong>Format</strong><span>Describe the answer</span></div>
+      <div><b>C</b><strong>Check</strong><span>Verify before you use it</span></div>
+    </div>
+    <div class="card"><b>And always:</b> keep sensitive data out. When in doubt, take it out.</div>
+    <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:22px">
+      ${pass?'<button class="btn primary" id="print">Print the job aid</button>':'<button class="btn primary" id="retake">Retake the knowledge check</button>'}
+      <button class="btn" id="restart">Restart the course</button>
+    </div>
+    <p class="hint" style="margin-top:16px">Print the one-page job aid and keep it near your desk. Maya does.</p>`;},
+    bind(){const p=document.getElementById('print'); if(p)p.onclick=()=>window.print();
+      const r=document.getElementById('retake'); if(r)r.onclick=()=>{state.quiz={};state.i=S.findIndex(s=>s.sec==='Knowledge check');save();draw();};
+      document.getElementById('restart').onclick=()=>{Object.assign(state,{i:0,quiz:{},flagged:{},sort:{},share:{},prompt:{},poll:null,lastFlag:null});save();draw();};},
+    gate:()=>true, last:true});
+
+  /* ---------- engine ---------- */
+  function draw(keepScroll){
+    if(state.i<0||state.i>=S.length)state.i=0;
+    const s=S[state.i], y=window.scrollY;
+    stage.innerHTML=s.render(); if(s.bind)s.bind();
+    bar.style.width=(state.i/(S.length-1)*100)+'%';
+    countEl.textContent=state.i===0?'':`Screen ${state.i} of ${S.length-1}`;
+    backBtn.disabled=state.i===0;
+    const ok=s.gate();
+    nextBtn.style.visibility=s.last?'hidden':'visible';
+    nextBtn.textContent=s.nextLabel||'Next →';
+    nextBtn.disabled=!ok;
+    nextBtn.title=ok?'':(s.need||'');
+    if(keepScroll){window.scrollTo(0,y);} else {window.scrollTo(0,0); stage.focus({preventScroll:true});}
+  }
+  nextBtn.onclick=()=>{if(S[state.i].gate()&&state.i<S.length-1){state.i++;state.lastFlag=null;save();draw();}};
+  backBtn.onclick=()=>{if(state.i>0){state.i--;state.lastFlag=null;save();draw();}};
+  draw();
+})();
+</script>
+</body>
+</html>
