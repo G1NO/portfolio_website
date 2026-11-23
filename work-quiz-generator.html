@@ -1,0 +1,503 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI Quiz Generator — Work Sample | Gino DeFalco</title>
+<meta name="description" content="An AI tool that maps training content into concepts and misconceptions, writes quizzes where every wrong answer is diagnostic, and reviews each question with an AI rubric plus rule-based checks.">
+<meta property="og:title" content="Work Sample: AI Quiz Generator">
+<meta property="og:description" content="Concept map → diagnostic quiz → two-way quality review. Built by instructional designer Gino DeFalco.">
+<meta property="og:image" content="https://ginodefalco.com/quiz-generator-preview.jpg">
+<meta property="og:url" content="https://ginodefalco.com/work-quiz-generator.html">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0f0d0b;--band:#16130f;--card:#1d1914;--card2:#231e18;--ink:#f2ece2;--muted:#a89e8f;--line:#2e281f;--amber:#e3913f;--amber-soft:rgba(227,145,63,.14);--green:#7cc08a;--green-soft:rgba(124,192,138,.13);--red:#e07a6a;--red-soft:rgba(224,122,106,.13);--blue:#8fb3d9;--blue-soft:rgba(143,179,217,.12)}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);font:17px/1.7 Inter,system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+  a{color:var(--amber)}
+  .wrap{max-width:1000px;margin:0 auto;padding:0 28px}
+  h1,h2,h3{font-family:Fraunces,Georgia,serif;line-height:1.15;margin:0;font-weight:700}
+  button{font:inherit;color:inherit}
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+  nav{position:sticky;top:0;z-index:10;background:rgba(15,13,11,.85);backdrop-filter:blur(10px);border-bottom:1px solid var(--line)}
+  nav .wrap{display:flex;justify-content:space-between;align-items:center;height:64px}
+  nav .name{font-family:Fraunces,serif;font-weight:700;font-size:19px;color:var(--ink);text-decoration:none}
+  nav a.back{color:var(--muted);text-decoration:none;font-size:14.5px}
+  nav a.back:hover{color:var(--amber)}
+  .hero{position:relative;overflow:hidden;padding:80px 0 50px}
+  .hero::before{content:"";position:absolute;inset:0;background:radial-gradient(600px 400px at 85% 30%,rgba(227,145,63,.18),transparent 70%);pointer-events:none}
+  .hero .wrap{position:relative}
+  .kicker{font-size:12.5px;letter-spacing:.16em;text-transform:uppercase;color:var(--amber);font-weight:600;margin-bottom:14px}
+  .hero h1{font-size:clamp(36px,5.5vw,58px);max-width:18ch}
+  .hero p{font-size:19px;color:var(--muted);max-width:62ch;margin:22px 0 30px}
+  .btns{display:flex;gap:14px;flex-wrap:wrap}
+  .btn{display:inline-flex;align-items:center;gap:8px;padding:13px 22px;border-radius:8px;text-decoration:none;font-weight:600;font-size:15px;transition:transform .15s;cursor:pointer;border:0}
+  .btn:hover{transform:translateY(-1px)}
+  .btn.primary{background:var(--amber);color:#1a120a}
+  .btn.ghost{border:1px solid #4a4134;color:var(--ink);background:none}
+  .facts{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-top:34px}
+  .facts div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px}
+  .facts small{display:block;font-size:11.5px;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);margin-bottom:4px}
+  .facts b{font-weight:600;font-size:15.5px}
+  section{padding:76px 0}
+  .band{background:var(--band);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  section h2{font-size:clamp(28px,4vw,38px);margin-bottom:18px}
+  .lead{font-size:18px;color:var(--muted);max-width:66ch;margin:0}
+
+  /* ---------- Demo shell ---------- */
+  .demo{margin-top:34px;background:var(--card);border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:0 30px 80px rgba(0,0,0,.45)}
+  .demo-top{display:flex;justify-content:space-between;align-items:center;gap:14px;flex-wrap:wrap;padding:14px 18px;border-bottom:1px solid var(--line);background:var(--card2)}
+  .demo-top .src{font-size:14px;color:var(--muted)}
+  .demo-top .src b{color:var(--ink);font-weight:600}
+  .tabs{display:flex;gap:4px;padding:0 10px;border-bottom:1px solid var(--line);overflow-x:auto}
+  .tab{background:none;border:0;border-bottom:2px solid transparent;padding:14px 14px 12px;font-size:15px;font-weight:600;color:var(--muted);cursor:pointer;white-space:nowrap}
+  .tab[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--amber)}
+  .tab .n{display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--line);font-size:12px;margin-right:8px}
+  .tab[aria-selected="true"] .n{background:var(--amber);color:#1a120a}
+  .panel{padding:26px}
+  .panel[hidden]{display:none}
+  .hint{font-size:14.5px;color:var(--muted);margin:0 0 18px}
+
+  /* concept map */
+  .objectives{margin:0 0 20px;padding:0;list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:8px 20px}
+  .objectives li{font-size:15px;padding-left:20px;position:relative}
+  .objectives li::before{content:"✓";position:absolute;left:0;color:var(--amber);font-weight:700}
+  .map-wrap{display:grid;grid-template-columns:1fr 290px;gap:20px;align-items:start}
+  .map svg{width:100%;height:auto;display:block}
+  .node rect{fill:#2a2219;stroke:#5a4a36;stroke-width:1.5;rx:10;transition:fill .15s,stroke .15s}
+  .node text{fill:var(--ink);font:500 13.5px Inter,sans-serif;pointer-events:none}
+  .node{cursor:pointer}
+  .node:hover rect,.node:focus rect{stroke:var(--amber)}
+  .node.active rect{fill:var(--amber-soft);stroke:var(--amber);stroke-width:2}
+  .node.untested rect{stroke-dasharray:6 4;fill:#1d1914}
+  .node:focus{outline:none}
+  .edge{fill:none;stroke:#5c5244;stroke-width:1.6}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-size:13px;color:var(--muted);margin-top:10px}
+  .legend i{display:inline-block;width:22px;height:12px;border-radius:4px;border:1.5px solid #5a4a36;background:#2a2219;vertical-align:-1px;margin-right:6px}
+  .legend i.d{border-style:dashed;background:none}
+  .detail{scroll-margin-top:80px;background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:18px;font-size:15px}
+  .detail h3{font-size:19px;margin-bottom:6px}
+  .detail .pre{font-size:13px;color:var(--muted);margin-bottom:10px}
+  .detail p{margin:0 0 12px;color:var(--muted)}
+  .detail h4{margin:14px 0 8px;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--amber)}
+  .mc{border-left:3px solid var(--amber);padding:2px 0 2px 12px;margin-bottom:12px}
+  .mc b{display:block;font-weight:600;font-size:14.5px}
+  .mc span{font-size:13.5px;color:var(--muted)}
+  .map-list{display:none}
+
+  /* quiz */
+  .toggle{display:inline-flex;background:var(--bg);border:1px solid var(--line);border-radius:10px;padding:4px;margin-bottom:20px}
+  .toggle button{background:none;border:0;padding:8px 16px;border-radius:7px;font-size:14.5px;font-weight:600;color:var(--muted);cursor:pointer}
+  .toggle button[aria-pressed="true"]{background:var(--amber);color:#1a120a}
+  .q{border:1px solid var(--line);border-radius:12px;padding:20px;margin-bottom:16px;background:var(--card2)}
+  .q .meta{font-size:12.5px;color:var(--muted);letter-spacing:.04em;margin-bottom:6px}
+  .q .stem{font-weight:600;font-size:16.5px;margin:0 0 14px;line-height:1.5}
+  .opt{display:block;width:100%;text-align:left;background:var(--bg);border:1px solid var(--line);border-radius:9px;padding:11px 14px;margin-bottom:8px;font-size:15px;cursor:pointer;line-height:1.5}
+  .opt:hover{border-color:#5a4a36}
+  .opt.right{border-color:var(--green);background:var(--green-soft)}
+  .opt.wrong{border-color:var(--red);background:var(--red-soft)}
+  .opt b{color:var(--amber);margin-right:6px}
+  .fb{font-size:14.5px;padding:10px 14px;border-radius:9px;margin-top:4px}
+  .fb.right{background:var(--green-soft);color:#cfe9d4}
+  .fb.wrong{background:var(--red-soft);color:#f3d0ca}
+  .designer .opt{cursor:default}
+  .target{display:block;font-size:13px;color:var(--amber);margin-top:4px}
+  .target.none{color:var(--red)}
+  .expl{font-size:14px;color:var(--muted);margin-top:10px}
+
+  /* review */
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:24px}
+  .metrics div{background:var(--card2);border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+  .metrics small{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted)}
+  .metrics b{font-family:Fraunces,serif;font-size:28px;font-weight:700}
+  .review h3{font-size:20px;margin:6px 0 6px}
+  .review .sub{font-size:14px;color:var(--muted);margin:0 0 12px}
+  .check{display:flex;gap:12px;align-items:flex-start;padding:11px 14px;border-radius:9px;margin-bottom:8px;font-size:14.5px;line-height:1.5}
+  .check.warning{background:var(--amber-soft)}
+  .check.error{background:var(--red-soft)}
+  .check.info{background:var(--blue-soft)}
+  .check .qid{font-weight:700;min-width:28px}
+  .check code{font-size:12px;color:var(--muted);display:block}
+  .both{margin:18px 0 26px;padding:14px 16px;border:1px solid var(--amber);border-radius:10px;font-size:15px}
+  .table-scroll{overflow-x:auto}
+  table{width:100%;border-collapse:separate;border-spacing:3px;font-size:14px;min-width:560px}
+  th{font-weight:600;color:var(--muted);font-size:12px;letter-spacing:.06em;text-transform:uppercase;text-align:center;padding:6px 4px}
+  th:first-child{text-align:left}
+  td{text-align:center;padding:8px 4px;border-radius:6px;font-weight:600}
+  td:first-child{text-align:left;font-weight:700;background:none}
+  .s4{background:rgba(124,192,138,.28)}.s3{background:rgba(180,200,110,.22)}.s2{background:rgba(227,145,63,.28)}.s1{background:rgba(224,122,106,.35)}
+  details.issue{border:1px solid var(--line);border-radius:9px;padding:10px 14px;margin-top:8px;font-size:14.5px;background:var(--card2)}
+  details.issue summary{cursor:pointer;font-weight:600}
+  details.issue ul{margin:8px 0 6px;padding-left:20px;color:var(--muted)}
+  details.issue p{margin:6px 0 0}
+  .overall{margin-top:16px;font-size:15px;color:var(--muted)}
+
+  /* sections below */
+  .grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:34px}
+  .card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:22px}
+  .card .step{font-family:Fraunces,serif;font-size:30px;color:var(--amber);line-height:1;margin-bottom:10px}
+  .card h3{font-size:19px;margin-bottom:8px}
+  .card p{margin:0;color:var(--muted);font-size:15px}
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:40px;margin-top:10px}
+  .two h3{font-size:20px;margin-bottom:10px}
+  ul.dia{list-style:none;margin:0;padding:0}
+  ul.dia li{position:relative;padding-left:22px;margin-bottom:10px;font-size:16px}
+  ul.dia li::before{content:"";position:absolute;left:0;top:.7em;width:8px;height:8px;border-radius:2px;background:var(--amber);transform:rotate(45deg)}
+  .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  .chips span{border:1px solid var(--line);background:var(--card2);padding:5px 12px;border-radius:999px;font-size:14px}
+  .note{margin-top:30px;font-size:14.5px;color:var(--muted);border-left:3px solid var(--line);padding-left:14px}
+  footer{text-align:center;padding:70px 0 80px}
+  footer h2{font-size:32px;margin-bottom:12px}
+  footer p{color:var(--muted);margin:0 0 26px}
+  footer .btns{justify-content:center}
+
+  @media (max-width:860px){
+    .map-wrap{grid-template-columns:1fr}
+    .grid4{grid-template-columns:1fr 1fr}
+    .metrics{grid-template-columns:1fr 1fr}
+  }
+  @media (max-width:640px){
+    .wrap{padding:0 18px}
+    .facts{grid-template-columns:1fr 1fr}
+    .objectives,.two,.grid4{grid-template-columns:1fr}
+    .hero{padding:50px 0 36px} section{padding:56px 0}
+    .panel{padding:18px}
+    .map svg{display:none}
+    .legend{display:none}
+    .map-list{display:block}
+    .lvl{margin-bottom:14px}
+    .lvl small{display:block;font-size:11.5px;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin-bottom:6px}
+    .lvl button{display:block;width:100%;text-align:left;background:#2a2219;border:1.5px solid #5a4a36;border-radius:10px;padding:10px 12px;margin-bottom:6px;font-size:15px;font-weight:500;cursor:pointer}
+    .lvl button.untested{border-style:dashed;background:none}
+    .lvl button.active{border-color:var(--amber);background:var(--amber-soft)}
+    .lvl button span{display:block;font-size:12.5px;color:var(--muted)}
+  }
+</style>
+</head>
+<body>
+<nav><div class="wrap"><a class="name" href="index.html">Gino DeFalco</a><a class="back" href="index.html#work">← Back to portfolio</a></div></nav>
+
+<header class="hero">
+  <div class="wrap">
+    <div class="kicker">Work sample · AI tool</div>
+    <h1>AI Quiz Generator</h1>
+    <p>Most AI quiz tools fill the wrong answers with random filler, so a wrong pick tells you nothing. I built one that maps the content first, then writes every wrong answer around a real misconception. When a learner misses a question, you know exactly what to reteach.</p>
+    <div class="btns">
+      <a class="btn primary" href="#demo">Try the demo ↓</a>
+      <a class="btn ghost" href="https://github.com/G1NO/ai-quiz-generator">View the code on GitHub</a>
+      <!--LIVE_APP_BUTTON-->
+    </div>
+    <div class="facts">
+      <div><small>Built with</small><b>Python · Claude API · Streamlit</b></div>
+      <div><small>Exports</small><b>Moodle GIFT, CSV, Markdown</b></div>
+      <div><small>Quality checks</small><b>AI rubric + 20+ rule checks</b></div>
+      <div><small>My role</small><b>Design and development</b></div>
+    </div>
+  </div>
+</header>
+
+<section class="band" id="demo">
+  <div class="wrap">
+    <div class="kicker">Interactive demo</div>
+    <h2>See what it made from a real lesson</h2>
+    <p class="lead">This is real output from the tool, run on the source text of my <a href="work-ai-at-work.html">Using AI Assistants at Work</a> course. Click through the three stages. A couple of the questions have flaws on purpose, so you can watch the review catch them.</p>
+
+    <div class="demo">
+      <div class="demo-top">
+        <div class="src">Source: <b>Using AI Assistants at Work</b> · Audience: <b id="aud"></b></div>
+      </div>
+      <div class="tabs" role="tablist" aria-label="Pipeline stages">
+        <button class="tab" role="tab" id="t-map" aria-controls="p-map" aria-selected="true"><span class="n">1</span>Concept map</button>
+        <button class="tab" role="tab" id="t-quiz" aria-controls="p-quiz" aria-selected="false" tabindex="-1"><span class="n">2</span>Quiz</button>
+        <button class="tab" role="tab" id="t-rev" aria-controls="p-rev" aria-selected="false" tabindex="-1"><span class="n">3</span>Quality review</button>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-map" aria-labelledby="t-map">
+        <p class="hint">The AI pulls out the key concepts, what each one builds on, and the mistakes learners commonly make. Click a concept to see its misconceptions.</p>
+        <ul class="objectives" id="objectives"></ul>
+        <div class="map-wrap">
+          <div class="map">
+            <svg id="map-svg" role="group" aria-label="Concept map"></svg>
+            <div class="map-list" id="map-list"></div>
+            <div class="legend"><span><i></i>Concept</span><span><i class="d"></i>No question yet (coverage gap)</span><span>Arrows point from a concept to what builds on it</span></div>
+          </div>
+          <div class="detail" id="detail" aria-live="polite"></div>
+        </div>
+      </div>
+
+      <div class="panel" role="tabpanel" id="p-quiz" aria-labelledby="t-quiz" hidden>
+        <div class="toggle" role="group" aria-label="Quiz view">
+          <button id="v-learner" aria-pressed="true">Learner view</button>
+          <button id="v-designer" aria-pressed="false">Designer view</button>
+        </div>
+        <p class="hint" id="quiz-hint"></p>
+        <div id="quiz"></div>
+      </div>
+
+      <div class="panel review" role="tabpanel" id="p-rev" aria-labelledby="t-rev" hidden>
+        <div class="metrics" id="metrics"></div>
+        <h3>Rule-based checks</h3>
+        <p class="sub">Plain code that catches the mistakes AI-written questions make over and over. These run on every quiz with no API call.</p>
+        <div id="checks"></div>
+        <div class="both" id="both"></div>
+        <h3>AI rubric review</h3>
+        <p class="sub">A second AI pass scores every question from 1 to 4 on six criteria and suggests fixes.</p>
+        <div class="table-scroll"><table id="rubric"></table></div>
+        <div id="issues"></div>
+        <p class="overall" id="overall"></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="kicker">How it works</div>
+    <h2>Four steps, one human in the loop</h2>
+    <div class="grid4">
+      <div class="card"><div class="step">01</div><h3>Map</h3><p>Objectives, concepts, prerequisites and misconceptions, drawn as a graph. An SME can edit the map before any questions are written.</p></div>
+      <div class="card"><div class="step">02</div><h3>Write</h3><p>Questions follow prerequisite order and lean toward apply and analyze. Every wrong answer targets one misconception.</p></div>
+      <div class="card"><div class="step">03</div><h3>Review</h3><p>An AI rubric and rule-based checks review every question. Anything both of them flag gets fixed first.</p></div>
+      <div class="card"><div class="step">04</div><h3>Export</h3><p>Moodle GIFT, CSV for bulk upload, Markdown for SME review, or the full project to reload later.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="band">
+  <div class="wrap">
+    <div class="kicker">Design decisions</div>
+    <h2>Why it's built this way</h2>
+    <div class="two">
+      <div>
+        <h3>Grounded in learning science</h3>
+        <ul class="dia">
+          <li><b>Diagnostic distractors:</b> a wrong answer tells you what the learner believes, not just that they missed it.</li>
+          <li><b>Prerequisite mapping:</b> concepts get tested after the ideas they depend on, and gaps in coverage show up on the map.</li>
+          <li><b>Feedback on every option</b> that speaks to the specific misconception, without shaming.</li>
+          <li><b>Item-writing rules</b> built in: no "all of the above," no length giveaways, negatives in caps, a balanced answer key.</li>
+        </ul>
+      </div>
+      <div>
+        <h3>Doesn't trust the AI blindly</h3>
+        <ul class="dia">
+          <li><b>Structured output:</b> every AI response is validated against a schema, and errors get sent back for a retry.</li>
+          <li><b>Two reviewers:</b> an AI grading an AI misses things, like a key that's "b" five times in a row. Plain code catches those every time.</li>
+          <li><b>Human checkpoint:</b> the concept map is editable before questions are written. That's where the SME belongs.</li>
+          <li><b>Tested:</b> 44 automated tests run on every change to the code.</li>
+        </ul>
+      </div>
+    </div>
+    <div class="chips"><span>Assessment design</span><span>Knowledge modeling</span><span>Misconception analysis</span><span>Rubric design</span><span>Bloom's taxonomy</span><span>AI output evaluation</span><span>Prompt engineering</span><span>Python</span><span>Claude API</span><span>Moodle GIFT</span></div>
+    <p class="note">The demo above is real output saved from the tool, so it loads instantly. The live version generates from any content you paste in.</p>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <h2>Need assessments that actually tell you something?</h2>
+    <p>I'm open to remote instructional design and learning experience work, especially AI-enabled learning.</p>
+    <div class="btns">
+      <a class="btn primary" href="mailto:ginodefalco@gmail.com">ginodefalco@gmail.com</a>
+      <a class="btn ghost" href="index.html">Back to portfolio</a>
+    </div>
+  </div>
+</footer>
+
+<script type="application/json" id="data">{"audience":"Non-technical office employees","concept_map":{"topic":"Using AI Assistants at Work","learning_objectives":["Explain why an AI assistant can state wrong information confidently","Decide what information is safe to enter into an AI tool","Revise a prompt using context, task, format, and an example","Verify AI output before using it in work that others will see"],"concepts":[{"id":"c1","name":"How AI assistants generate text","description":"They predict likely text from learned patterns. They don't look facts up unless connected to a search tool, and they don't know if what they wrote is true.","prerequisites":[],"misconceptions":[{"id":"m1","description":"The AI searches the internet for every answer","why_it_happens":"Chat interfaces look like search boxes, so people assume they work the same way."},{"id":"m2","description":"The AI pulls answers from a database of verified facts","why_it_happens":"Fluent, specific answers feel like they came from a reference source."},{"id":"m3","description":"If the answer sounds confident, it's probably right","why_it_happens":"With people, confidence often signals knowledge, and the habit carries over."}]},{"id":"c2","name":"Hallucinations","description":"AI assistants can produce made-up details, like fake citations or numbers, that look real.","prerequisites":["c1"],"misconceptions":[{"id":"m4","description":"Hallucinations only happen on obscure topics","why_it_happens":"People picture errors as rare glitches, not a normal side effect of how the tool works."},{"id":"m5","description":"Asking the AI 'are you sure?' will catch its mistakes","why_it_happens":"It feels like double-checking, but the AI can confidently confirm its own error."}]},{"id":"c3","name":"Data exposure in public AI tools","description":"What you type into a public tool may be stored by the vendor and possibly used for training. Treat the prompt like an email to an outsider.","prerequisites":[],"misconceptions":[{"id":"m6","description":"Deleting the chat removes the data from the vendor","why_it_happens":"Deleting things on your own screen feels like deleting them everywhere."},{"id":"m7","description":"A small amount of customer data is fine to paste","why_it_happens":"It feels low-risk when it's just one record."},{"id":"m8","description":"Chats in AI tools are private to your account","why_it_happens":"A login makes the tool feel personal, like a private notebook."}]},{"id":"c4","name":"Approved enterprise tools","description":"Company-approved tools come with agreements that keep your data out of model training.","prerequisites":["c3"],"misconceptions":[{"id":"m9","description":"Enterprise and free versions are basically the same","why_it_happens":"The interfaces look alike, so the difference in data handling isn't visible."},{"id":"m10","description":"An approved tool means you no longer need to use judgment","why_it_happens":"Approval feels like blanket permission."}]},{"id":"c5","name":"Writing effective prompts","description":"Good prompts give context, a clear task, and the output format. Refine instead of starting over, and give an example.","prerequisites":[],"misconceptions":[{"id":"m11","description":"Shorter, vaguer prompts give the AI room to do better","why_it_happens":"People expect the AI to fill in the gaps the way a coworker would."},{"id":"m12","description":"A bad first answer means the tool can't do the task","why_it_happens":"People judge the tool on one try instead of treating it as a draft."},{"id":"m13","description":"Re-running the same prompt is the best fix for a bad answer","why_it_happens":"Sometimes it works by luck, so it feels like a strategy."}]},{"id":"c6","name":"Verifying output and owning it","description":"You're responsible for anything you send, even if AI drafted it. Check facts, numbers, names, and quotes.","prerequisites":["c1","c2"],"misconceptions":[{"id":"m14","description":"If the AI made the mistake, the AI (or vendor) is responsible","why_it_happens":"It feels unfair to own errors you didn't write."},{"id":"m15","description":"Only numbers need to be checked","why_it_happens":"Numbers look like the 'factual' part; wording feels safe."}]},{"id":"c7","name":"Choosing the right tasks for AI","description":"Strong at drafts, summaries, brainstorming, rewording. Weak at current info, exact math, and context-heavy judgment calls.","prerequisites":["c1"],"misconceptions":[{"id":"m16","description":"AI assistants are reliable at exact calculations","why_it_happens":"Computers are good at math, so people assume AI chat tools are too."},{"id":"m17","description":"AI assistants always know about recent events","why_it_happens":"They seem to know about everything else."}]}]},"quiz":{"topic":"Using AI Assistants at Work","questions":[{"id":"q1","concept_id":"c1","bloom_level":"understand","stem":"A coworker says, \"I asked the AI, so the answer must be current and fact-checked.\" What's the most accurate response?","options":[{"id":"a","text":"Unless it's connected to search, it predicts text from patterns and doesn't check facts.","misconception_id":null,"feedback":"Right. It generates likely text. It doesn't look things up or verify them on its own."},{"id":"b","text":"That's true, because AI assistants search the web for every answer.","misconception_id":"m1","feedback":"Not quite. Without a connected search tool, the AI isn't looking anything up."},{"id":"c","text":"That's true, because the AI draws from a database of verified facts.","misconception_id":"m2","feedback":"Not quite. There's no fact database behind the answer, just patterns it learned."},{"id":"d","text":"That's true as long as the answer sounds confident and detailed.","misconception_id":"m3","feedback":"Confidence isn't evidence. The AI sounds just as sure when it's wrong."}],"correct_option_id":"a","explanation":"AI assistants predict likely text. They don't verify facts unless connected to a tool that does."},{"id":"q2","concept_id":"c2","bloom_level":"apply","stem":"You ask an AI for the section number of a well-known industry regulation, and it gives you one. What's the safest next step?","options":[{"id":"a","text":"Use it, since errors mostly happen on obscure topics.","misconception_id":"m4","feedback":"Hallucinations happen on familiar topics too, especially with specific details like section numbers."},{"id":"b","text":"Ask the AI if it's sure, and use it if it says yes.","misconception_id":"m5","feedback":"The AI can confidently confirm its own mistake. That's not a real check."},{"id":"c","text":"Check the section number against the official regulation.","misconception_id":null,"feedback":"Right. Specific details like citations are exactly where made-up answers show up."},{"id":"d","text":"Use it, since the AI pulled it from its fact database.","misconception_id":"m2","feedback":"There's no verified fact database behind the answer."}],"correct_option_id":"c","explanation":"Specific details like citations are a common place for hallucinations. Check them against the source."},{"id":"q3","concept_id":"c3","bloom_level":"apply","stem":"Maria wants a free AI tool to summarize a customer complaint that includes the customer's name, address, and account number. Her company hasn't approved the tool. What should she do?","options":[{"id":"a","text":"Paste it in, then delete the chat so the data is gone.","misconception_id":"m6","feedback":"Deleting the chat on your screen doesn't mean the vendor deleted it."},{"id":"b","text":"Remove the personal details first, or use an approved tool.","misconception_id":null,"feedback":"Right. Personal data shouldn't go into a tool the company hasn't approved."},{"id":"c","text":"Paste it in, since one customer's details is a small risk.","misconception_id":"m7","feedback":"Even one record is a real privacy problem for that customer and the company."},{"id":"d","text":"Paste it in, since her chats are private to her account.","misconception_id":"m8","feedback":"A login doesn't make it private. The vendor may store and use what you type."}],"correct_option_id":"b","explanation":"Treat the prompt box like an email to someone outside the company. Strip personal data or use an approved tool."},{"id":"q4","concept_id":"c5","bloom_level":"apply","stem":"Devon's first AI draft of a team announcement came back too formal and too long. What should he do next?","options":[{"id":"a","text":"Decide the tool can't write announcements.","misconception_id":"m12","feedback":"One miss doesn't mean the tool can't do it. Treat the first answer as a draft."},{"id":"b","text":"Send a shorter, vaguer prompt instead.","misconception_id":"m11","feedback":"Less context usually makes results worse, not better."},{"id":"c","text":"Re-run the exact same prompt in a new chat.","misconception_id":"m13","feedback":"Same request, same problem. Refining the prompt works better than rolling the dice."},{"id":"d","text":"Tell it who the audience is, the tone and length he wants, and paste in a past announcement he liked as an example, then ask it to revise.","misconception_id":null,"feedback":"Right. Context, format, and an example are the most reliable ways to improve a result."}],"correct_option_id":"d","explanation":"Refine with context, format, and an example instead of starting over or giving up."},{"id":"q5","concept_id":"c6","bloom_level":"analyze","stem":"A manager sends an AI-drafted customer email without reading it, and it lists the wrong refund window. Who is responsible for the error?","options":[{"id":"a","text":"The manager, because whoever sends AI output owns it.","misconception_id":null,"feedback":"Right. You're responsible for anything you send, no matter who or what drafted it."},{"id":"b","text":"The AI vendor, because their tool wrote the wrong policy.","misconception_id":"m14","feedback":"The vendor didn't send the email. The person who sent it owns the content."},{"id":"c","text":"No one, since AI errors are expected and unavoidable.","misconception_id":"m14","feedback":"Errors are expected, which is exactly why checking before sending is required."},{"id":"d","text":"No one, since only numbers need checking, not policy text.","misconception_id":"m15","feedback":"Policy wording, names, and quotes need checking too, not just numbers."}],"correct_option_id":"a","explanation":"AI can draft, but the sender is accountable. Verify everything customer-facing."},{"id":"q6","concept_id":"c7","bloom_level":"evaluate","stem":"Which of these tasks is an AI assistant not well suited to handle on its own?","options":[{"id":"a","text":"Summarizing a long meeting transcript","misconception_id":null,"feedback":"AI assistants are strong at summarizing."},{"id":"b","text":"Rewording a paragraph to sound friendlier","misconception_id":null,"feedback":"AI assistants are strong at rewording."},{"id":"c","text":"Calculating exact commission payouts for 40 employees","misconception_id":null,"feedback":"Right. Exact calculations are a weak spot. Use a spreadsheet or payroll system."},{"id":"d","text":"Drafting a first version of a job posting","misconception_id":null,"feedback":"First drafts are a strength."}],"correct_option_id":"c","explanation":"AI assistants are weak at exact math and current information. Use them for drafts, summaries, and rewording."}]},"evaluation":{"evaluations":[{"question_id":"q1","scores":{"alignment":4,"accuracy":4,"distractor_quality":4,"clarity":3,"accessibility":3,"bias":4},"issues":["The quote in the stem bundles two claims ('current' and 'fact-checked'), which makes the item slightly harder to parse than it needs to be."],"suggested_fix":null},{"question_id":"q2","scores":{"alignment":4,"accuracy":4,"distractor_quality":4,"clarity":4,"accessibility":4,"bias":4},"issues":[],"suggested_fix":null},{"question_id":"q3","scores":{"alignment":4,"accuracy":4,"distractor_quality":4,"clarity":3,"accessibility":3,"bias":4},"issues":["Stem is long for a non-technical audience (about 30 words)."],"suggested_fix":"Trim to: 'Maria wants an unapproved AI tool to summarize a complaint with a customer's name and account number. What should she do?'"},{"question_id":"q4","scores":{"alignment":4,"accuracy":4,"distractor_quality":3,"clarity":2,"accessibility":3,"bias":4},"issues":["The correct answer is much longer and more detailed than the distractors, which gives it away to test-wise learners.","Option b is weaker than the others; few learners would pick it."],"suggested_fix":"Shorten d to 'Revise the prompt with audience, tone, length, and an example.' and lengthen the distractors to match."},{"question_id":"q5","scores":{"alignment":4,"accuracy":4,"distractor_quality":4,"clarity":4,"accessibility":4,"bias":4},"issues":[],"suggested_fix":null},{"question_id":"q6","scores":{"alignment":3,"accuracy":4,"distractor_quality":1,"clarity":2,"accessibility":3,"bias":4},"issues":["Negative stem ('not') is easy to miss; learners may answer the opposite question.","Distractors are true statements about AI strengths, not misconceptions, so a wrong answer doesn't diagnose anything.","Does not test the 'current information' part of the concept."],"suggested_fix":"Rewrite as a positive stem, e.g. 'Priya needs exact commission totals for 40 employees. Is an AI assistant the right tool?', with distractors built on m16 and m17."}],"overall_notes":"Questions 1, 2, 3, and 5 are solid and diagnostic. Question 4 has a length giveaway and question 6 needs a rewrite. No question covers approved enterprise tools (c4), which is a key point in the source."},"checks":[{"check":"untargeted_distractor","question_id":"q6","severity":"warning","message":"Option a isn't tied to a misconception, so a wrong pick tells you nothing."},{"check":"untargeted_distractor","question_id":"q6","severity":"warning","message":"Option b isn't tied to a misconception, so a wrong pick tells you nothing."},{"check":"untargeted_distractor","question_id":"q6","severity":"warning","message":"Option d isn't tied to a misconception, so a wrong pick tells you nothing."},{"check":"longest_answer_giveaway","question_id":"q4","severity":"warning","message":"Correct answer is 138 chars vs. 41 avg for the others. Test-wise learners pick the longest."},{"check":"hidden_negative","question_id":"q6","severity":"warning","message":"Stem uses 'not' without emphasis; learners skim past it. Rephrase or capitalize."},{"check":"coverage_gap","question_id":null,"severity":"info","message":"No question covers: c4 (Approved enterprise tools)."}]}</script>
+<script>
+(function(){
+  const D = JSON.parse(document.getElementById('data').textContent);
+  const cmap = D.concept_map, quiz = D.quiz, ev = D.evaluation, checks = D.checks;
+  const $ = s => document.querySelector(s);
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+  const byId = Object.fromEntries(cmap.concepts.map(c => [c.id, c]));
+  const misc = {}; cmap.concepts.forEach(c => c.misconceptions.forEach(m => misc[m.id] = m));
+  const tested = new Set(quiz.questions.map(q => q.concept_id));
+  $('#aud').textContent = D.audience;
+
+  /* ---------- Tabs ---------- */
+  const tabs = [...document.querySelectorAll('.tab')];
+  function select(tab){
+    tabs.forEach(t => {
+      const on = t === tab;
+      t.setAttribute('aria-selected', on); t.tabIndex = on ? 0 : -1;
+      document.getElementById(t.getAttribute('aria-controls')).hidden = !on;
+    });
+  }
+  tabs.forEach((t, i) => {
+    t.addEventListener('click', () => select(t));
+    t.addEventListener('keydown', e => {
+      if (e.key !== 'ArrowRight' && e.key !== 'ArrowLeft') return;
+      const n = tabs[(i + (e.key === 'ArrowRight' ? 1 : tabs.length - 1)) % tabs.length];
+      select(n); n.focus();
+    });
+  });
+
+  /* ---------- Concept map ---------- */
+  $('#objectives').innerHTML = cmap.learning_objectives.map(o => `<li>${esc(o)}</li>`).join('');
+
+  // Level = longest prerequisite chain below the concept.
+  const level = {};
+  const depth = id => level[id] ?? (level[id] = Math.max(-1, ...byId[id].prerequisites.filter(p => byId[p]).map(depth)) + 1);
+  cmap.concepts.forEach(c => depth(c.id));
+  const rows = [];
+  cmap.concepts.forEach(c => (rows[level[c.id]] ||= []).push(c));
+
+  // Hide arrows already implied by a longer path (c1 -> c2 -> c6 makes c1 -> c6 redundant).
+  const reach = (from, to, skip) => byId[from].prerequisites.some(p => byId[p] && (p !== skip || from !== to) && (p === to || reach(p, to)));
+  const edges = [];
+  cmap.concepts.forEach(c => c.prerequisites.filter(p => byId[p]).forEach(p => {
+    const viaOther = c.prerequisites.some(q => q !== p && byId[q] && reach(q, p));
+    if (!viaOther) edges.push([p, c.id]);
+  }));
+
+  // Place each concept under the average of its parents, then push apart any overlaps.
+  const W = 620, NW = 176, NH = 56, ROWH = 112, PAD = 16, GAP = 18, pos = {};
+  rows.forEach((row, r) => {
+    const want = c => {
+      const ps = edges.filter(e => e[1] === c.id).map(e => pos[e[0]].x);
+      return ps.length ? ps.reduce((a, b) => a + b, 0) / ps.length : null;
+    };
+    if (r === 0) {
+      const gap = (W - row.length * NW) / (row.length + 1);
+      row.forEach((c, i) => pos[c.id] = { x: gap + i * (NW + gap), y: PAD });
+      return;
+    }
+    const items = row.map(c => ({ c, x: want(c) ?? W / 2 - NW / 2 })).sort((a, b) => a.x - b.x);
+    for (let i = 1; i < items.length; i++) items[i].x = Math.max(items[i].x, items[i - 1].x + NW + GAP);
+    const overflow = items[items.length - 1].x + NW - (W - 4);
+    if (overflow > 0) items.forEach(it => it.x -= overflow);
+    for (let i = items.length - 2; i >= 0; i--) items[i].x = Math.min(items[i].x, items[i + 1].x - NW - GAP);
+    if (items[0].x < 4) { const d = 4 - items[0].x; items.forEach(it => it.x += d); }
+    items.forEach(it => pos[it.c.id] = { x: it.x, y: PAD + r * ROWH });
+  });
+
+  function wrap(text, max){
+    const words = text.split(' '), lines = [''];
+    words.forEach(w => { const l = lines[lines.length - 1]; (l + ' ' + w).trim().length > max ? lines.push(w) : lines[lines.length - 1] = (l + ' ' + w).trim(); });
+    return lines;
+  }
+  const H = PAD * 2 + (rows.length - 1) * ROWH + NH;
+  let svg = `<defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#5c5244"/></marker></defs>`;
+  edges.forEach(([p, cid]) => {
+    const a = pos[p], b = pos[cid];
+    const x1 = a.x + NW / 2, y1 = a.y + NH, x2 = b.x + NW / 2, y2 = b.y - 2, my = (y1 + y2) / 2;
+    svg += `<path class="edge" d="M${x1} ${y1} C${x1} ${my} ${x2} ${my} ${x2} ${y2}" marker-end="url(#arr)"/>`;
+  });
+  cmap.concepts.forEach(c => {
+    const p = pos[c.id], lines = wrap(c.name, 24);
+    const cls = 'node' + (tested.has(c.id) ? '' : ' untested');
+    const label = c.name + (tested.has(c.id) ? '' : ' (no question yet)');
+    svg += `<g class="${cls}" data-id="${c.id}" tabindex="0" role="button" aria-label="${esc(label)}">
+      <rect x="${p.x}" y="${p.y}" width="${NW}" height="${NH}" rx="10"/>
+      ${lines.map((l, i) => `<text x="${p.x + NW / 2}" y="${p.y + NH / 2 + (i - (lines.length - 1) / 2) * 17 + 5}" text-anchor="middle">${esc(l)}</text>`).join('')}
+    </g>`;
+  });
+  const el = $('#map-svg');
+  el.setAttribute('viewBox', `0 0 ${W} ${H}`);
+  el.innerHTML = svg;
+
+  // Mobile: same map as a stacked list by level.
+  $('#map-list').innerHTML = rows.map((row, r) => `<div class="lvl"><small>${r === 0 ? 'Foundations' : 'Level ' + (r + 1)}</small>${row.map(c => {
+    const pre = c.prerequisites.filter(p => byId[p]).map(p => byId[p].name);
+    return `<button data-id="${c.id}" class="${tested.has(c.id) ? '' : 'untested'}">${esc(c.name)}${pre.length ? `<span>Builds on: ${esc(pre.join(', '))}</span>` : ''}${tested.has(c.id) ? '' : '<span>No question yet</span>'}</button>`;
+  }).join('')}</div>`).join('');
+
+  function showConcept(id){
+    const c = byId[id];
+    document.querySelectorAll('[data-id]').forEach(n => n.classList.toggle('active', n.dataset.id === id));
+    const pre = c.prerequisites.filter(p => byId[p]).map(p => byId[p].name);
+    const qs = quiz.questions.filter(q => q.concept_id === id).map(q => q.id.toUpperCase());
+    $('#detail').innerHTML = `<h3>${esc(c.name)}</h3>
+      <div class="pre">${pre.length ? 'Builds on: ' + esc(pre.join(', ')) : 'Foundation concept'} · ${qs.length ? 'Tested in ' + qs.join(', ') : '<span style="color:var(--red)">Not tested yet</span>'}</div>
+      <p>${esc(c.description)}</p>
+      <h4>Misconceptions</h4>
+      ${c.misconceptions.map(m => `<div class="mc"><b>${esc(m.description)}</b><span>${esc(m.why_it_happens)}</span></div>`).join('')}`;
+  }
+  document.querySelectorAll('#map-svg .node, #map-list button').forEach(n => {
+    n.addEventListener('click', () => {
+      showConcept(n.dataset.id);
+      if (n.tagName === 'BUTTON' && window.matchMedia('(max-width:640px)').matches) $('#detail').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+    n.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); showConcept(n.dataset.id); } });
+  });
+  showConcept(cmap.concepts[0].id);
+
+  /* ---------- Quiz ---------- */
+  let mode = 'learner';
+  const answers = {};
+  function renderQuiz(){
+    $('#quiz-hint').textContent = mode === 'learner'
+      ? 'Take it like a learner. Pick an answer to see the feedback.'
+      : 'What the designer sees: the answer key, and the misconception each wrong answer targets.';
+    $('#quiz').className = mode;
+    $('#quiz').innerHTML = quiz.questions.map((q, n) => {
+      const c = byId[q.concept_id];
+      const meta = `Question ${n + 1} · ${esc(c ? c.name : q.concept_id)} · Bloom: ${esc(q.bloom_level)}`;
+      if (mode === 'learner') {
+        const pick = answers[q.id];
+        const opts = q.options.map(o => {
+          let cls = 'opt';
+          if (pick) { if (o.id === q.correct_option_id) cls += ' right'; else if (o.id === pick) cls += ' wrong'; }
+          return `<button class="${cls}" data-q="${q.id}" data-o="${o.id}" aria-pressed="${pick === o.id}"><b>${o.id.toUpperCase()}</b>${esc(o.text)}</button>`;
+        }).join('');
+        let fb = '';
+        if (pick) {
+          const o = q.options.find(x => x.id === pick), ok = pick === q.correct_option_id;
+          fb = `<div class="fb ${ok ? 'right' : 'wrong'}" role="status">${ok ? 'Correct. ' : ''}${esc(o.feedback)}</div>`;
+        }
+        return `<div class="q"><div class="meta">${meta}</div><p class="stem">${esc(q.stem)}</p>${opts}${fb}</div>`;
+      }
+      const opts = q.options.map(o => {
+        if (o.id === q.correct_option_id) return `<div class="opt right"><b>${o.id.toUpperCase()}</b>${esc(o.text)}<span class="target" style="color:var(--green)">✓ Correct answer</span></div>`;
+        const t = o.misconception_id && misc[o.misconception_id];
+        return `<div class="opt"><b>${o.id.toUpperCase()}</b>${esc(o.text)}${t ? `<span class="target">↳ Targets: ${esc(t.description)}</span>` : '<span class="target none">↳ Not tied to a misconception</span>'}</div>`;
+      }).join('');
+      return `<div class="q"><div class="meta">${meta}</div><p class="stem">${esc(q.stem)}</p>${opts}<div class="expl">${esc(q.explanation)}</div></div>`;
+    }).join('');
+    document.querySelectorAll('#quiz button.opt').forEach(b => b.addEventListener('click', () => {
+      answers[b.dataset.q] = b.dataset.o; renderQuiz();
+      const target = document.querySelector(`#quiz button[data-q="${b.dataset.q}"][data-o="${b.dataset.o}"]`);
+      if (target) target.focus();
+    }));
+  }
+  [['#v-learner', 'learner'], ['#v-designer', 'designer']].forEach(([sel, m]) => $(sel).addEventListener('click', () => {
+    mode = m; $('#v-learner').setAttribute('aria-pressed', m === 'learner'); $('#v-designer').setAttribute('aria-pressed', m === 'designer'); renderQuiz();
+  }));
+  renderQuiz();
+
+  /* ---------- Review ---------- */
+  const distractors = quiz.questions.flatMap(q => q.options.filter(o => o.id !== q.correct_option_id));
+  const targeted = distractors.filter(o => o.misconception_id).length;
+  const avg = e => { const s = e.scores; return (s.alignment + s.accuracy + s.distractor_quality + s.clarity + s.accessibility + s.bias) / 6; };
+  const overall = ev.evaluations.reduce((t, e) => t + avg(e), 0) / ev.evaluations.length;
+  $('#metrics').innerHTML = [
+    ['Questions', quiz.questions.length],
+    ['Concepts covered', `${tested.size}/${cmap.concepts.length}`],
+    ['Diagnostic wrong answers', `${targeted}/${distractors.length}`],
+    ['AI rubric average', `${overall.toFixed(2)}<span style="font-size:16px;color:var(--muted)"> / 4</span>`],
+  ].map(([k, v]) => `<div><small>${k}</small><b>${v}</b></div>`).join('');
+
+  const icon = { error: '✖', warning: '⚠', info: 'ℹ' };
+  $('#checks').innerHTML = checks.map(r => `<div class="check ${r.severity}"><span aria-hidden="true">${icon[r.severity]}</span><span class="qid">${r.question_id ? esc(r.question_id.toUpperCase()) : ''}</span><span>${esc(r.message)}<code>${esc(r.check)}</code></span></div>`).join('');
+
+  const ruleFlag = new Set(checks.filter(r => r.question_id && r.severity !== 'info').map(r => r.question_id));
+  const aiFlag = new Set(ev.evaluations.filter(e => avg(e) < 3.5).map(e => e.question_id));
+  const both = [...ruleFlag].filter(q => aiFlag.has(q)).sort((a, b) => parseInt(a.slice(1)) - parseInt(b.slice(1))).map(q => q.toUpperCase());
+  $('#both').innerHTML = both.length
+    ? `<b>Both reviewers flagged ${both.join(' and ')}.</b> When the rules and the AI agree, that's where to look first.`
+    : 'No question was flagged by both reviewers.';
+
+  const cols = [['alignment', 'Alignment'], ['accuracy', 'Accuracy'], ['distractor_quality', 'Wrong answers'], ['clarity', 'Clarity'], ['accessibility', 'Access.'], ['bias', 'Bias']];
+  $('#rubric').innerHTML = `<thead><tr><th>Q</th>${cols.map(c => `<th>${c[1]}</th>`).join('')}<th>Avg</th></tr></thead><tbody>${
+    ev.evaluations.map(e => `<tr><td>${esc(e.question_id.toUpperCase())}</td>${cols.map(([k]) => `<td class="s${e.scores[k]}">${e.scores[k]}</td>`).join('')}<td class="s${Math.max(1, Math.floor(avg(e)))}">${avg(e).toFixed(2)}</td></tr>`).join('')
+  }</tbody>`;
+  $('#issues').innerHTML = ev.evaluations.filter(e => e.issues.length || e.suggested_fix).map(e => `<details class="issue"><summary>${esc(e.question_id.toUpperCase())}: ${e.issues.length} issue${e.issues.length === 1 ? '' : 's'} noted</summary><ul>${e.issues.map(i => `<li>${esc(i)}</li>`).join('')}</ul>${e.suggested_fix ? `<p><b>Suggested fix:</b> ${esc(e.suggested_fix)}</p>` : ''}</details>`).join('');
+  $('#overall').innerHTML = `<b style="color:var(--ink)">Overall:</b> ${esc(ev.overall_notes)}`;
+})();
+</script>
+</body>
+</html>
